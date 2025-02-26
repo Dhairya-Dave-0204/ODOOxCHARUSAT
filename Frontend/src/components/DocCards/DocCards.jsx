@@ -24,7 +24,7 @@ function DocCards({heading}) {
               <h2 className="text-2xl font-medium">{item.name}</h2>
               <h4 className="mb-2 font-medium">{item.speciality}</h4>
               <p className="mb-2 font-light max-w-56">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-              <button onClick={() => navigate("/doctor1")} className="px-3 py-2 text-white transition-all duration-500 rounded-lg bg-primary hover:scale-110">Appoint</button>
+              <button onClick={() => navigate("/doc-profile")} className="px-3 py-2 text-white transition-all duration-500 rounded-lg bg-primary hover:scale-110">Appoint</button>
             </div>
           )
         })}

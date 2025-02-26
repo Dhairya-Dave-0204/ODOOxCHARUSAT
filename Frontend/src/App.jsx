@@ -19,7 +19,7 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/survey" element={<Survey />} />
         <Route path="/doc-general" element={<DocGeneral />} />
-        <Route path="/doc-profile1" element={<DocProfile1 />} />
+        <Route path="/doc-profile" element={<DocProfile1 />} />
         <Route path="/doc-category" element={<DocCategory />} />
         </Routes>
         <Footer />

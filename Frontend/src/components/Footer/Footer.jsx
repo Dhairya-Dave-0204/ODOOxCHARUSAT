@@ -49,7 +49,7 @@ function Footer() {
           <div className="flex flex-col gap-2 basis-1/6 ">
             <h2 className="mb-2 text-xl font-semibold">Quick Links</h2>
             <Link to="/">Home</Link>
-            <Link to="/doctor">Doctor</Link>
+            <Link to="/doc-general">Doctor</Link>
             <Link to="/survey">Survey</Link>
             <Link to="/about">About Us</Link>
             <Link to="/contact">Contact Us</Link>
