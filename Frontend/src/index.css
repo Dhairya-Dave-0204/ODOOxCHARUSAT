@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00ABC1;
+  --color-secondary: #00777C;
+  --color-tertiary: #90E0EF;
+  --color-quaternary: #CAF0F8;
+  --color-dark: #03045E;
+  --color-light: #FEFFFE;
+  --color-text: #131B23;
+
+  --font-parkinsans: 'Parkin Sans', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-parkinsans);
+  background-color: var(--color-light);
+  color: var(--color-text);
+}
