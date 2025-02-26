@@ -18,7 +18,7 @@ function DocCards({heading}) {
         {doctors.map((item) => {
           return(
             <div className="flex flex-col items-center justify-center p-5 transition-all duration-500 border rounded-lg border-slate-200 hover:shadow-lg">
-              <div className="w-32 h-32 p-1 rounded-[50%] border-4 border-primary mb-3">
+              <div key={item.id} className="w-32 h-32 p-1 rounded-[50%] border-4 border-primary mb-3">
                 <img src={item.image} alt={item.name} className="rounded-[50%] w-full h-full"/>
               </div>
               <h2 className="text-2xl font-medium">{item.name}</h2>

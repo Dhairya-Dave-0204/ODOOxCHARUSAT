@@ -205,7 +205,7 @@ function Contact() {
         </div>
 
         <div className="flex flex-col items-center justify-center p-10">
-          <i class="ri-map-pin-line text-4xl text-white rounded-xl mb-3 bg-primary p-4"></i>
+          <i className="p-4 mb-3 text-4xl text-white ri-map-pin-line rounded-xl bg-primary"></i>
           <h3 className="mb-2 text-2xl font-medium">Location</h3>
           <p className="mb-2 text-center">
             Loacte us on the map globally so that you can <br /> solve your
