@@ -10,6 +10,7 @@ import SignUp from "./SignUp/SignUp";
 
 import Admin from "./Admin/admin";
 import PatientAdd from "./Admin/PatientAdd/PatientAdd";
+import DoctorAdd from "./Admin/DoctorAdd/DoctorAdd";
 
 export {
     Home,
@@ -24,4 +25,5 @@ export {
     
     Admin,
     PatientAdd,
+    DoctorAdd,
 }
