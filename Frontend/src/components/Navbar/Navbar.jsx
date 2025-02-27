@@ -5,7 +5,7 @@ import { AppContext } from "../../context/AppCcontext";
 function Navbar() {
   const [menuOpened, setMenuOpened] = useState(false);
 
-  const { user } = useContext(AppContext)
+  const { user,setUser } = useContext(AppContext)
 
   return (
     <nav className="flex items-center justify-between px-8 py-6 text-xl md:px-32">
@@ -114,7 +114,7 @@ function Navbar() {
             </Link>
           ) : (
             <Link
-              to="/profile"
+              to="/logout"
               className="transition-all duration-500 hover:scale-110 hover:text-primary"
             >
               <li>Profile</li>

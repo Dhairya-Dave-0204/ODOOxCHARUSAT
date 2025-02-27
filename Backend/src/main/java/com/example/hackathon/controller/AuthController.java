@@ -5,8 +5,6 @@ import com.example.hackathon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-//import session
-// import jakarta.*;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.HashMap;
@@ -28,7 +26,7 @@ public class AuthController {
         Map<String, String> response = new HashMap<>();
 
         if (user.isPresent()) {
-            session.setAttribute("user", user.get());
+        session.setAttribute("user", user.get());
         response.put("status", "success");
         response.put("role", user.get().getRole().toString());
         response.put("message", "Login successful!");
@@ -38,8 +36,6 @@ public class AuthController {
         }
         return response;
     }
-
-
 
     @PostMapping("/register")
     public Map<String, String> register(@RequestBody User user) {
@@ -56,6 +52,7 @@ public class AuthController {
         }
         return response;
     }
+
     @PostMapping("/logout")
     public Map<String, String> logout(HttpSession session) {
         session.invalidate();  // Destroy session on logout

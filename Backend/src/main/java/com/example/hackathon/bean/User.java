@@ -26,12 +26,6 @@ public class User implements Serializable{
     @Column(nullable = false)
     private Role role;  // ADMIN, DOCTOR, PATIENT
 
-    // public enum Role {
-    //     ADMIN, DOCTOR, PATIENT
-    // }
-    //  public void setPassword(String rawPassword) {
-    //     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    //     this.password = passwordEncoder.encode(rawPassword);
-    // }
+    
 
 }
