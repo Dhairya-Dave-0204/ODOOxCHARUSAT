@@ -1,5 +1,7 @@
 package com.example.hackathon.bean;
 
+import java.util.Optional;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,15 +16,23 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long patientId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // Links to users table
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", nullable = true)
     private Doctor doctor; // Assigns patient to doctor
 
+    @Column(nullable = false)
     private int age;
+
+    @Column(nullable = false)
     private String gender;
-    private String phone;
+
+    @Column(nullable = false)
+    private String contact;
+
+    @Column(nullable = false)
+    private String dob;
 }
