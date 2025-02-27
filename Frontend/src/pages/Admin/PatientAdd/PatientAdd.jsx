@@ -93,6 +93,7 @@ function PatientAdd() {
             />
           </div>
         </form>
+        <button type="submit" className="px-8 py-3 mt-6 text-xl font-medium text-white transition-all duration-500 rounded-lg cursor-pointer hover:scale-105 bg-primary">Submit</button>
       </div>
     </>
   );
