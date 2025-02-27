@@ -21,3 +21,23 @@ body {
   background-color: var(--color-light);
   color: var(--color-text);
 }
+
+.gradient-1 {
+  background: linear-gradient(to right, #00ABC1, #00777C, #03045E);
+}
+
+.gradient-2 {
+  background: linear-gradient(to bottom right, #90E0EF, #00ABC1, #03045E);
+}
+
+.gradient-3 {
+  background: linear-gradient(to right, #CAF0F8, #90E0EF, #00777C);
+}
+
+.gradient-4 {
+  background: linear-gradient(to bottom right, #90E0EF, #00ABC1, #03045E);
+}
+
+.gradient-5 {
+  background: linear-gradient(to top left, #03045E, #00777C, #CAF0F8);
+}

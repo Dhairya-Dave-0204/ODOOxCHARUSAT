@@ -22,6 +22,7 @@ import people from "./people2.jpg"
 import practice from "./Practice.jpg"
 import survey from "./survey.jpg"
 import laptop from "./laptop_work.jpg"
+import surgeon from "./login_surgeon.png"
 
 import check from "./check.png"
 import draw from "./draw.png"
@@ -57,6 +58,7 @@ const assets = {
     practice,
     survey,
     laptop,
+    surgeon,
 
     check,
     draw,

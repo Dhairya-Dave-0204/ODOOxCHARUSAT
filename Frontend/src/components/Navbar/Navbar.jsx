@@ -48,7 +48,7 @@ function Navbar() {
         </Link>
         {!user ? (
           <Link
-            to="/join"
+            to="/signup"
             className="transition-all duration-500 hover:scale-110 hover:text-primary"
           >
             <li>Join Now</li>
