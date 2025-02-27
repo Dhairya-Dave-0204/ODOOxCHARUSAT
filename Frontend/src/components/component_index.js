@@ -15,6 +15,8 @@ import DocHighlight from "./DocHighlight/DocHighlight";
 import AppointForm from "./AppointForm/AppointForm";
 import DocDetails from "./DocDetails/DocDetails";
 
+import Sidebar from "./Sidebar/Sidebar";
+
 export {
     Navbar,
     Footer,
@@ -32,4 +34,6 @@ export {
     DocHighlight,
     AppointForm,
     DocDetails,
+    
+    Sidebar,
 }

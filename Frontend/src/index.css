@@ -41,3 +41,9 @@ body {
 .gradient-5 {
   background: linear-gradient(to top left, #03045E, #00777C, #CAF0F8);
 }
+
+@media screen and (max-width:900px) {
+  .sidebar-option p {
+    display: none;
+  }
+}

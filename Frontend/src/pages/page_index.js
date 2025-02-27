@@ -8,6 +8,9 @@ import DocProfile1 from "./DocProfile1/DocProfile1";
 import DocCategory from "./DocCategogry/DocCategory";
 import SignUp from "./SignUp/SignUp";
 
+import Admin from "./Admin/admin";
+import PatientAdd from "./Admin/PatientAdd/PatientAdd";
+
 export {
     Home,
     About,
@@ -18,4 +21,7 @@ export {
     DocProfile1,
     DocCategory,
     SignUp,
+    
+    Admin,
+    PatientAdd,
 }
