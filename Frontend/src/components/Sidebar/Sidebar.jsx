@@ -1,7 +1,26 @@
+import axios from 'axios';
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 function Sidebar() {
+
+
+    const logout = async () => {
+        console.log("Logout called");
+        try {
+          await axios.post("http://localhost:8080/auth/logout", {}, { withCredentials: true });
+    
+          // Clear session storage
+          sessionStorage.removeItem("email");
+          sessionStorage.removeItem("role");
+          console.log("Logout called1");
+    
+          window.location.href = "/signup";
+        } catch (error) {
+          console.error("Logout failed:", error);
+        }
+      };
+
   return (
     <>
         <div className='sidebar w-[20%] min-h-[100vh] border-2 border-secondary border-t-0 text-lg'>
@@ -20,6 +39,14 @@ function Sidebar() {
                     <i className="text-2xl ri-stethoscope-line"></i>
                     <p>Add Doctor</p>
                 </NavLink>
+
+                <button
+                    onClick={logout}
+                    className="sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500"
+                >
+                    <i className="text-2xl ri-logout-box-r-line"></i>
+                    <p>Logout</p>
+                </button>
             </div>
         </div>
     </>

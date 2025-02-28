@@ -10,6 +10,7 @@ import com.example.hackathon.repository.UserRepository;
 import com.example.hackathon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 
@@ -86,6 +87,7 @@ public class AuthController {
     }
 
     @PostMapping("/addPatient")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addPatient(@RequestBody Map<String, Object> patientData) {
         // Ensure required fields are present
 
@@ -137,6 +139,7 @@ public class AuthController {
     }
 
     @PostMapping("/addDoctor")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addDoctor(@RequestBody Map<String, String> doctorData) {
         String email = doctorData.get("email");
         String specialization = doctorData.get("specialization");
