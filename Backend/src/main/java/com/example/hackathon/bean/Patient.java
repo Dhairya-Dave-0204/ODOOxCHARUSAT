@@ -1,6 +1,5 @@
 package com.example.hackathon.bean;
 
-import java.util.Optional;
 
 import jakarta.persistence.*;
 import lombok.*;

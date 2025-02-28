@@ -1,10 +1,13 @@
-import React from "react";
+import React , {useEffect} from "react";
 import assets from "../../assets/assets";
 import { useNavigate } from "react-router-dom";
 
 function About() {
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top when component mounts
+  }, []);
 
   return (
     <div className="flex flex-col gap-6 px-12 py-6 mb-24 xl:px-60 md:flex-row">

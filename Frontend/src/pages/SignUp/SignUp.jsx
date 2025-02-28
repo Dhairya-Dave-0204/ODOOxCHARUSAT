@@ -26,7 +26,7 @@ function SignUp() {
     setError(""); // Clear previous errors
 
     try {
-      if (isSignIn) {
+      
         // **Login Logic**
         const response = await axios.post(
           "http://localhost:8080/auth/login",
@@ -35,18 +35,12 @@ function SignUp() {
             params: { email: formData.email, password: formData.password },
           },
           { withCredentials: true }
-        ); // Ensure session cookies are stored
+        ); 
 
         console.log("Login Response:", response.data);
         if (response.data.status === "success") {
-          // Store role in sessionStorage (for client-side access)
           sessionStorage.setItem("role", response.data.role);
           sessionStorage.setItem("email", formData.email);
-
-          // // Redirect user based on role
-          // if (response.data.role === "ADMIN") navigate("/admin/home");
-          // else if (response.data.role === "DOCTOR") navigate("/doctor/dashboard");
-          // else navigate("/patient/dashboard");
 
           alert("Welcome " + response.data.role);
 
@@ -54,30 +48,7 @@ function SignUp() {
         } else {
           setError(response.data.message);
         }
-      } else {
-        // **Signup Logic**
-        if (formData.password !== formData.confirmPassword) {
-          setError("Passwords do not match!");
-          return;
-        }
-
-        const response = await axios.post(
-          "http://localhost:8080/auth/register",
-          {
-            name: formData.fullName,
-            email: formData.email,
-            password: formData.password,
-            role: formData.role,
-          }
-        );
-
-        console.log("Signup Response:", response.data);
-        if (response.data.status === "success") {
-          setIsSignIn(true); // Switch to login after successful signup
-        } else {
-          setError(response.data.message);
-        }
-      }
+      
     } catch (error) {
       console.error("Error:", error);
       setError("Something went wrong. Please try again.");

@@ -13,12 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.hackathon.service.EmailService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.print.Doc;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,6 +39,12 @@ public class AuthController {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
@@ -89,57 +98,56 @@ public class AuthController {
     @PostMapping("/addPatient")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addPatient(@RequestBody Map<String, Object> patientData) {
-        // Ensure required fields are present
-
-
         if (!patientData.containsKey("email") || !patientData.containsKey("doctorId")) {
             return ResponseEntity.badRequest().body("Missing required fields: email or doctorId");
         }
-
+    
         String email = (String) patientData.get("email");
-
-        // Check if the user email already exists
+    
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists!");
         }
+    
         Long doctorId = Long.valueOf(patientData.get("doctorId").toString());
-
-        // Fetch Doctor by ID
-        Optional<Doctor> doctor1 = doctorRepository.findById(doctorId);
-        if (doctor1.isEmpty()) {
+    
+        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
+        if (doctor.isEmpty()) {
             return ResponseEntity.badRequest().body("Doctor not found with ID: " + doctorId);
         }
-
-        // Create User for Patient
+    
         User user = new User();
         user.setEmail(email);
-        user.setPassword((String) patientData.getOrDefault("dob", "defaultPass")); // Default password is DOB
+        String dob = (String) patientData.getOrDefault("dob", "2000-01-01");
+        String formattedDob = LocalDate.parse(dob).format(DateTimeFormatter.ofPattern("ddMMyyyy"));
+        user.setPassword(passwordEncoder.encode(formattedDob));
         user.setRole(Role.PATIENT);
         user.setName((String) patientData.getOrDefault("name", "N/A"));
         userRepository.save(user);
-
-       
-        
-        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
-        if (doctor.isEmpty()) {
-            return ResponseEntity.badRequest().body("Doctor not found for given ID");
-        }
-
-        // Create and Save Patient
+    
         Patient patient = new Patient();
         patient.setUser(user);
         patient.setAge(Integer.parseInt(patientData.getOrDefault("age", "0").toString()));
         patient.setContact((String) patientData.getOrDefault("contact", "N/A"));
         patient.setGender((String) patientData.getOrDefault("gender", "Other"));
-        patient.setDob((String) patientData.getOrDefault("dob", "2000-01-01"));
-        patient.setDoctor(doctor.get()); // Assign the doctor
-
+        patient.setDob(dob);
+        patient.setDoctor(doctor.get());
+    
         patientRepository.save(patient);
-
+    
+        // ✅ Send email after successful registration
+        String subject = "Welcome to CareConnect!";
+        String message = "Hello " + user.getName() + ",\n\n" +
+                         "Your account has been created successfully.\n" +
+                         "Login using your email: " + user.getEmail() + "\n" +
+                         "Your temporary password is: " + formattedDob + "\n\n" +
+                         "Best Regards,\nCareConnect Team";
+    
+        emailService.sendEmail(user.getEmail(), subject, message);
+    
         return ResponseEntity.ok("Patient added successfully!");
     }
-
+    
     @PostMapping("/addDoctor")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addDoctor(@RequestBody Map<String, String> doctorData) {
