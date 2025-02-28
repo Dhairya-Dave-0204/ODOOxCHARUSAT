@@ -103,22 +103,24 @@ public class AuthController {
         if (existingUser.isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists!");
         }
+        Long doctorId = Long.valueOf(patientData.get("doctorId").toString());
+
+        // Fetch Doctor by ID
+        Optional<Doctor> doctor1 = doctorRepository.findById(doctorId);
+        if (doctor1.isEmpty()) {
+            return ResponseEntity.badRequest().body("Doctor not found with ID: " + doctorId);
+        }
 
         // Create User for Patient
         User user = new User();
         user.setEmail(email);
         user.setPassword((String) patientData.getOrDefault("dob", "defaultPass")); // Default password is DOB
         user.setRole(Role.PATIENT);
+        user.setName((String) patientData.getOrDefault("name", "N/A"));
         userRepository.save(user);
 
-        // Fetch Doctor by ID using findById()
-        Long doctorId;
-        try {
-            doctorId = Long.valueOf(patientData.get("doctorId").toString());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Invalid doctorId format");
-        }
-
+       
+        
         Optional<Doctor> doctor = doctorRepository.findById(doctorId);
         if (doctor.isEmpty()) {
             return ResponseEntity.badRequest().body("Doctor not found for given ID");
@@ -159,6 +161,7 @@ public class AuthController {
         user.setEmail(email);
         user.setPassword("defaultPass"); // Admin will set password
         user.setRole(Role.DOCTOR);
+        user.setName(doctorData.getOrDefault("name", "N/A"));
         userRepository.save(user); // ✅ Save the User first
 
         // Create a new Doctor and link it to the User

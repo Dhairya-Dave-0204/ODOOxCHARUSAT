@@ -2,6 +2,7 @@ package com.example.hackathon.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,19 +20,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors().and() // Enable CORS
-            .csrf().disable() // Disable CSRF for testing (DO NOT disable in production)
+            .cors().and()
+            .csrf().disable()
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // Allow register & login without authentication
-                .requestMatchers("/admin/**").hasAuthority("ADMIN")   // Only Admins can access
-                .requestMatchers("/doctor/**").hasAuthority("DOCTOR") // Only Doctors can access
-                .requestMatchers("/").hasAuthority("PATIENT") // Only Patients can access
-                .anyRequest().authenticated() // Secure all other endpoints
-                // .anyRequest().permitAll() 
+                .requestMatchers(HttpMethod.GET, "/fetch/**").permitAll()  // ✅ Allow GET requests under `/fetch/`
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/doctor/**").hasAuthority("DOCTOR")
+                .requestMatchers("/").hasAuthority("PATIENT")
+                .anyRequest().authenticated()
             )
-            .formLogin().disable()  // 🚀 Disables Spring's default login form
-            .httpBasic().disable(); // Optional: Disables Basic Aut
+            .formLogin().disable()
+            .httpBasic().disable();
 
         return http.build();
     }
+
 }
