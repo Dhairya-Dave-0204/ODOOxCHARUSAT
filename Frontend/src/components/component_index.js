@@ -16,6 +16,9 @@ import AppointForm from "./AppointForm/AppointForm";
 import DocDetails from "./DocDetails/DocDetails";
 
 import Sidebar from "./Sidebar/Sidebar";
+import ImageAdmin from "./ImageAdmin/ImageAdmin";
+import MainStatsAdmin from "./MainStatsAdmin/MainStatsAdmin";
+import SubStatsAdmin from "./SubStatsAdmin/SubStatsAdmin";
 
 export {
     Navbar,
@@ -36,4 +39,7 @@ export {
     DocDetails,
     
     Sidebar,
+    ImageAdmin,
+    MainStatsAdmin,
+    SubStatsAdmin,
 }
