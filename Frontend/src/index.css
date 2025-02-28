@@ -9,7 +9,7 @@
   --color-light: #FEFFFE;
   --color-text: #131B23;
 
-  --font-parkinsans: 'Parkin Sans', sans-serif;
+  --font-kanit: 'Kanit', sans-serif;
 }
 
 html {
@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  font-family: var(--font-parkinsans);
+  font-family: var(--font-kanit);
   background-color: var(--color-light);
   color: var(--color-text);
 }
