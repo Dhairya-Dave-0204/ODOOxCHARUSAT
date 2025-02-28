@@ -16,9 +16,19 @@ function Sidebar() {
                     <p>Add Patient</p>
                 </NavLink>
                 
+                <NavLink to="/admin/patient-list" className='sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500'>
+                    <i className="text-2xl ri-booklet-line"></i>
+                    <p>List Patient</p>
+                </NavLink>
+                
                 <NavLink to="/admin/doctor" className='sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500'>
                     <i className="text-2xl ri-stethoscope-line"></i>
                     <p>Add Doctor</p>
+                </NavLink>
+                
+                <NavLink to="/admin/doctor-list" className='sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500'>
+                    <i className="text-2xl ri-git-repository-line"></i>
+                    <p>List Doctor</p>
                 </NavLink>
             </div>
         </div>
