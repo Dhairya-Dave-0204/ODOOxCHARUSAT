@@ -8,11 +8,11 @@ function DoctorCards({ doctor }) {
       <div className="relative p-5 bg-white border border-gray-100 rounded-lg shadow-md">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-4">
-          <img src={doctor.image} alt={doctor.name} className="rounded-full h-14 w-14" />
+          {/* <img src={doctor.image} alt={doctor.name} className="rounded-full h-14 w-14" /> */}
           <div>
             <h3 className="text-lg font-semibold">{doctor.name}</h3>
-            <p className="text-sm text-gray-700">{doctor.specialty}</p>
-            <p className="text-sm text-gray-500 opacity-[75%]">{doctor.location}</p>
+            <p className="text-sm text-gray-700">{doctor.specialization}</p>
+            <p className="text-sm text-gray-500 opacity-[75%]">{doctor.email}</p>
           </div>
         </div>
         <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 text-2xl rounded-full cursor-pointer hover:bg-gray-200">

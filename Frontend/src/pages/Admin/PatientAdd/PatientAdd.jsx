@@ -1,7 +1,27 @@
-import React from "react";
+import React , {useState,useEffect}from "react";
 import axios from "axios";
 
 function PatientAdd() {
+
+
+  const [doctors, setDoctors] = useState([]); // State to store doctors
+
+  // ✅ Fetch doctors from backend
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/fetch/alldoctors"); // Update with your API endpoint
+        setDoctors(response.data); // Assuming API returns an array of doctors
+      } catch (error) {
+        console.error("Failed to fetch doctors:", error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
+
+
   const addPatient = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -85,7 +105,7 @@ function PatientAdd() {
           />
         </div>
 
-        <div className="flex flex-col gap-3">
+        {/* <div className="flex flex-col gap-3">
           <label htmlFor="age">Doc</label>
           <input
             type="number"
@@ -94,7 +114,7 @@ function PatientAdd() {
             placeholder="docId"
             className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500"
           />
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-3">
           <label htmlFor="dob">Date of Birth</label>
@@ -121,6 +141,24 @@ function PatientAdd() {
             <option value="other">Other</option>
           </select>
         </div>
+        {/* ✅ Doctor Selection Dropdown */}
+        <div className="flex flex-col gap-3">
+          <label htmlFor="doctorid">Select Doctor</label>
+          <select name="doctorid" required className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500">
+            <option value="" disabled selected>
+              Select a Doctor
+            </option>
+            {doctors.length > 0 ? (
+              doctors.map((doctor) => (
+                <option key={doctor.id} value={doctor.id}>
+                  {doctor.name} - {doctor.specialization}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading doctors...</option>
+            )}
+          </select>
+      </div>
 
         <div className="flex flex-col gap-3">
           <label htmlFor="password">Password</label>
