@@ -19,6 +19,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import ImageAdmin from "./ImageAdmin/ImageAdmin";
 import MainStatsAdmin from "./MainStatsAdmin/MainStatsAdmin";
 import SubStatsAdmin from "./SubStatsAdmin/SubStatsAdmin";
+import AppointList from "./AppointList/AppointList";
 
 export {
     Navbar,
@@ -42,4 +43,5 @@ export {
     ImageAdmin,
     MainStatsAdmin,
     SubStatsAdmin,
+    AppointList,
 }
