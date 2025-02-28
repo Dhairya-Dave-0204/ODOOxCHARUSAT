@@ -40,10 +40,14 @@ function SignUp() {
           sessionStorage.setItem("role", response.data.role);
           sessionStorage.setItem("email", formData.email);
 
-          // Redirect user based on role
-          if (response.data.role === "ADMIN") navigate("/admin/dashboard");
-          else if (response.data.role === "DOCTOR") navigate("/doctor/dashboard");
-          else navigate("/patient/dashboard");
+          // // Redirect user based on role
+          // if (response.data.role === "ADMIN") navigate("/admin/home");
+          // else if (response.data.role === "DOCTOR") navigate("/doctor/dashboard");
+          // else navigate("/patient/dashboard");
+
+          alert("Welcome " + response.data.role);
+
+          window.location.href = "/";
         } else {
           setError(response.data.message);
         }
