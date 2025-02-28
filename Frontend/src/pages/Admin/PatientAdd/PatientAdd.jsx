@@ -122,7 +122,7 @@ function PatientAdd() {
             type="date"
             name="dob"
             required
-            className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500"
+            className="px-5 py-3 font-light border-2 rounded-lg outline-none focus:border-primary border-slate-500"
           />
         </div>
 
@@ -131,7 +131,7 @@ function PatientAdd() {
           <select
             name="gender"
             required
-            className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500"
+            className="px-5 py-3 font-light border-2 rounded-lg outline-none focus:border-primary border-slate-500"
           >
             <option value="" disabled selected>
               Select Gender
@@ -144,7 +144,7 @@ function PatientAdd() {
         {/* ✅ Doctor Selection Dropdown */}
         <div className="flex flex-col gap-3">
           <label htmlFor="doctorid">Select Doctor</label>
-          <select name="doctorid" required className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500">
+          <select name="doctorid" required className="px-5 py-3 font-light border-2 rounded-lg outline-none focus:border-primary border-slate-500">
             <option value="" disabled selected>
               Select a Doctor
             </option>
@@ -159,22 +159,6 @@ function PatientAdd() {
             )}
           </select>
       </div>
-
-        <div className="flex flex-col gap-3">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            required
-            minLength={8}
-            maxLength={14}
-            placeholder="Password"
-            className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500"
-          />
-        </div>
-
-        
-
         {/* ✅ Move Submit button inside the form */}
         <button
           type="submit"
