@@ -216,50 +216,40 @@ function PatientList() {
 
   return (
     <>
-      <div className="p-6 mx-auto mt-5 bg-white rounded-lg shadow-md">
-        <div className="flex items-center justify-between mb-4 border-b border-gray-400">
-          <h2 className="text-2xl font-semibold">PATIENT LIST</h2>
-          <button className="px-4 py-2 text-xl transition-all duration-500 cursor-pointer text-primary hover:text-secondary">
-            Add Patient
-          </button>
-        </div>
-        <div className="flex items-center justify-between mb-4">
-          <select className="p-2 border border-gray-400 rounded">
-            <option>5</option>
-            <option>10</option>
-            <option>20</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Search Data..."
-            className="w-1/3 max-w-lg p-2 border border-gray-400 rounded"
-          />
-        </div>
-        <div className="overflow-x-auto">
+       <div className="p-6 mx-auto mt-5 bg-white rounded-lg shadow-md">
+      <div className="flex items-center justify-between mb-4 border-b border-gray-400">
+        <h2 className="text-2xl font-semibold">PATIENT LIST</h2>
+        <button className="px-4 py-2 text-xl transition-all duration-500 cursor-pointer text-primary hover:text-secondary">
+          Add Patient
+        </button>
+      </div>
+      <div className="flex items-center justify-between mb-4">
+        <select className="p-2 border border-gray-400 rounded">
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+        </select>
+        <input type="text" placeholder="Search Data..." className="w-1/3 max-w-lg p-2 border border-gray-400 rounded" />
+      </div>
+      <div className="w-full overflow-x-auto">
+        <div className="min-w-max">
           <table className="w-full text-left border border-gray-300">
             <thead>
               <tr className="text-white bg-primary">
-                <th className="p-3">Name</th>
-                <th className="p-3">Address</th>
-                <th className="p-3">Disease</th>
-                <th className="p-3">Age</th>
-                <th className="p-3">Phone</th>
-                <th className="p-3">Email</th>
-                <th className="p-3 text-center">Action</th>
+                <th className="p-3 whitespace-nowrap">Name</th>
+                <th className="p-3 whitespace-nowrap">Address</th>
+                <th className="p-3 whitespace-nowrap">Disease</th>
+                <th className="p-3 whitespace-nowrap">Age</th>
+                <th className="p-3 whitespace-nowrap">Phone</th>
+                <th className="p-3 whitespace-nowrap">Email</th>
+                <th className="p-3 text-center whitespace-nowrap">Action</th>
               </tr>
             </thead>
             <tbody>
               {currentPatients.map((patient) => (
-                <tr
-                  key={patient.id}
-                  className="border-b border-gray-400 hover:bg-gray-100"
-                >
+                <tr key={patient.id} className="border-b border-gray-400 hover:bg-gray-100">
                   <td className="flex items-center p-3 space-x-2">
-                    <img
-                      src={patient.image}
-                      alt="Profile"
-                      className="rounded-[50%] w-12 h-12"
-                    />
+                    <img src={patient.image} alt="Profile" className="w-12 h-12 rounded-full" />
                     <span>{patient.name}</span>
                   </td>
                   <td className="p-3">{patient.address}</td>
@@ -268,54 +258,26 @@ function PatientList() {
                   <td className="p-3">{patient.phone}</td>
                   <td className="p-3">{patient.email}</td>
                   <td className="flex justify-center p-3 space-x-2 text-xl">
-                    <button className="cursor-pointer text-primary hover:text-secondary">
-                      <i className="ri-pencil-line"></i>
-                    </button>
-                    <button className="text-red-600 cursor-pointer hover:text-red-800">
-                      <i className="ri-delete-bin-line"></i>
-                    </button>
+                    <button className="cursor-pointer text-primary hover:text-secondary">✏️</button>
+                    <button className="text-red-600 cursor-pointer hover:text-red-800">🗑</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between mt-4">
-          <span>
-            Showing {indexOfFirstItem + 1} to {indexOfLastItem} of{" "}
-            {patients.length} entries
-          </span>
-          <div className="flex space-x-2">
-            <button
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
-            {[...Array(totalPages)].map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`px-4 py-2 rounded ${
-                  currentPage === i + 1
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-300"
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
-            <button
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
+      </div>
+      <div className="flex items-center justify-between mt-4">
+        <span>Showing {indexOfFirstItem + 1} to {indexOfLastItem} of {patients.length} entries</span>
+        <div className="flex space-x-2">
+          <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Previous</button>
+          {[...Array(totalPages)].map((_, i) => (
+            <button key={i} onClick={() => setCurrentPage(i + 1)} className={`px-4 py-2 rounded ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-300'}`}>{i + 1}</button>
+          ))}
+          <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages} className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Next</button>
         </div>
       </div>
+    </div>
     </>
   );
 }
