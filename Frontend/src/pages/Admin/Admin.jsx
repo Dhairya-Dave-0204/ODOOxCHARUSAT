@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageAdmin, MainStatsAdmin, SubStatsAdmin } from "../../components/component_index"
+import { ImageAdmin, MainStatsAdmin, SubStatsAdmin, AppointList } from "../../components/component_index"
 
 function Admin() {
   return (
@@ -8,6 +8,7 @@ function Admin() {
             <ImageAdmin />
             <MainStatsAdmin />
             <SubStatsAdmin />
+            <AppointList />
         </div>
     </>
   )
