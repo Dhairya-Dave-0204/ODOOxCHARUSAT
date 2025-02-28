@@ -26,6 +26,7 @@ public class User implements Serializable{
     @Column(nullable = false)
     private Role role;  // ADMIN, DOCTOR, PATIENT
 
+   
     
 
 }

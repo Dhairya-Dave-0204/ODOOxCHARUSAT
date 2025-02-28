@@ -1,11 +1,42 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link , useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppCcontext";
+import axios from "axios";
 
 function Navbar() {
   const [menuOpened, setMenuOpened] = useState(false);
 
-  const { user,setUser } = useContext(AppContext)
+  const [user, setUser] = useState({ email: "", role: "" });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedEmail = sessionStorage.getItem("email");
+    const storedRole = sessionStorage.getItem("role");
+
+    if (storedEmail) {
+      setUser({ email: storedEmail, role: storedRole });
+    }
+  }, []);
+  console.log(user.email + " from navbar");
+
+
+  const logout = async () => {
+    console.log("Logout called");
+    try {
+      await axios.post("http://localhost:8080/auth/logout", {}, { withCredentials: true });
+
+      // Clear session storage
+      sessionStorage.removeItem("email");
+      sessionStorage.removeItem("role");
+      console.log("Logout called1");
+
+      // Redirect to login page
+      navigate("/signup");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <nav className="flex items-center justify-between px-8 py-6 text-xl md:px-32">
@@ -46,7 +77,7 @@ function Navbar() {
         >
           <li>Contact Us</li>
         </Link>
-        {!user ? (
+        {!user.email ? (
           <Link
             to="/signup"
             className="transition-all duration-500 hover:scale-110 hover:text-primary"
@@ -55,7 +86,7 @@ function Navbar() {
           </Link>
         ) : (
           <Link
-            to="/profile"
+          onClick={logout}
             className="transition-all duration-500 hover:scale-110 hover:text-primary"
           >
             <li>Profile</li>
@@ -105,16 +136,16 @@ function Navbar() {
           >
             <li>Contact Us</li>
           </Link>
-          {!user ? (
+          {!user.email ? (
             <Link
-              to="/join"
+              to="/signup"
               className="transition-all duration-500 hover:scale-110 hover:text-primary"
             >
               <li>Join Now</li>
             </Link>
           ) : (
             <Link
-              to="/logout"
+            onClick={logout}
               className="transition-all duration-500 hover:scale-110 hover:text-primary"
             >
               <li>Profile</li>
