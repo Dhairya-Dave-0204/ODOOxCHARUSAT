@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.hackathon.bean.Doctor;
 import com.example.hackathon.bean.Patient;
-import com.example.hackathon.bean.Role;
-import com.example.hackathon.bean.User;
 import com.example.hackathon.repository.DoctorRepository;
 import com.example.hackathon.repository.PatientRepository;
 import com.example.hackathon.repository.UserRepository;

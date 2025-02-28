@@ -32,7 +32,7 @@ function Navbar() {
       console.log("Logout called1");
 
       // Redirect to login page
-      navigate("/signup");
+      window.location.href = "/signup";
     } catch (error) {
       console.error("Logout failed:", error);
     }
