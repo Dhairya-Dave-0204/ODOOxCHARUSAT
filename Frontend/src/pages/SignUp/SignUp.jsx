@@ -38,7 +38,13 @@ function SignUp() {
         sessionStorage.setItem("role", response.data.role);
         sessionStorage.setItem("email", formData.email);
         alert("Welcome " + response.data.role);
+        if(response.data.role === "ADMIN"){
+          // navigate("/admin/home");
+          window.location.href = "/admin/home";
+        }
+        else{
         window.location.href = "/";
+        }
       } else {
         setError(response.data.message);
       }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // ✅ Added missing axios import
 import AppointCard from "./AppointCard";
+import { useNavigate } from "react-router-dom"; // ✅ Removed unused import
+
 
 function UserProfile() {
   const [patient, setPatient] = useState(null);
@@ -8,10 +10,15 @@ function UserProfile() {
   const [error, setError] = useState("");
   const email = sessionStorage.getItem("email");
 
+  const navigate = useNavigate(); // ✅ Removed unused navigate
+
   useEffect(() => {
     if (!email) {
       console.error("No email found in session");
       setError("No email found in session.");
+      alert("Please Login First");
+      navigate("/signup"); // ✅ Redirect to signup page
+      // window.location.href = "/signup";
       setLoading(false);
       return;
     }
@@ -63,6 +70,12 @@ function UserProfile() {
       specialization: "Orthopedic",
       date: "2025-03-08",
       time: "01:00 PM",
+    },
+    {
+      doctorName: "Dr. Jane Wilson",
+      specialization: "Neurologist",
+      date: "2025-03-09",
+      time: "02:15 PM",
     },
     {
       doctorName: "Dr. Jane Wilson",
@@ -166,7 +179,7 @@ function UserProfile() {
               <label htmlFor="Gender" className="mb-2 text-xl">
                 Gender
               </label>
-              <select
+              <input
                 name="Gender"
                 defaultValue={patient?.gender} // ✅ Populate gender
                 readOnly={true} // ✅ Disable editing
