@@ -39,7 +39,6 @@ function App() {
               <Route path="/admin/doctor" element={<DoctorAdd />} />
               <Route path="/admin/patient-list" element={<PatientList />} />
               <Route path="/admin/doctor-list" element={<DoctorList />} />
-              <Route path="/admin/user-profile" element={<UserProfile />} />
             </Routes>
           </div>
         </div>
@@ -58,6 +57,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgot" element={<ForgotPass />} />
             <Route path="/reset" element={<ResetPassword />} />
+            <Route path="/user-profile" element={<UserProfile />} />
           </Routes>
 
           {/* ✅ Hide Footer if current path is in hideFooterRoutes */}
