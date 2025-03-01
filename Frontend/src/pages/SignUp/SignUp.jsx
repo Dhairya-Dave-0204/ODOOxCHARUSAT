@@ -40,7 +40,13 @@ function SignUp() {
         sessionStorage.setItem("email", formData.email);
         toast.success("Welcome" + response.data.role)
         alert("Welcome " + response.data.role);
+        if(response.data.role === "ADMIN"){
+          // navigate("/admin/home");
+          window.location.href = "/admin/home";
+        }
+        else{
         window.location.href = "/";
+        }
       } else {
         setError(response.data.message);
       }
