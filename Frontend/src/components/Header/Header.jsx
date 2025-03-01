@@ -23,7 +23,7 @@ function Header() {
             Go and register now for completly free!
         </p>
 
-        <button onClick={() => navigate("/join")}
+        <button onClick={() => navigate("/signup")}
             className="px-3 py-2 text-sm font-medium text-white transition-all duration-500 border bg-primary md:px-5 md:py-3 md:text-lg rounded-2xl hover:scale-110 hover:text-primary hover:border-primary hover:bg-white"
         >
             Join Now

@@ -8,11 +8,8 @@ import DocProfile1 from "./DocProfile1/DocProfile1";
 import DocCategory from "./DocCategogry/DocCategory";
 import SignUp from "./SignUp/SignUp";
 import ForgotPass from "./ForgotPass/ForgotPass";
-<<<<<<< HEAD
 import UserProfile from "./UserProfile/UserProfile";
-=======
 import ResetPassword from "./ForgotPass/ResetPassword";
->>>>>>> f76a194f0878e0026e715b47cd10a9ec20194901
 
 import Admin from "./Admin/admin";
 import PatientAdd from "./Admin/PatientAdd/PatientAdd";
