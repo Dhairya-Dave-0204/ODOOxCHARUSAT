@@ -1,66 +1,80 @@
-import axios from 'axios';
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import axios from "axios";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 function Sidebar() {
+  const [collapsed, setCollapsed] = useState(false);
 
-
-    const logout = async () => {
-        console.log("Logout called");
-        try {
-          await axios.post("http://localhost:8080/auth/logout", {}, { withCredentials: true });
-    
-          // Clear session storage
-          sessionStorage.removeItem("email");
-          sessionStorage.removeItem("role");
-          console.log("Logout called1");
-    
-          window.location.href = "/signup";
-        } catch (error) {
-          console.error("Logout failed:", error);
-        }
-      };
+  const logout = async () => {
+    console.log("Logout called");
+    try {
+      await axios.post(
+        "http://localhost:8080/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      sessionStorage.removeItem("email");
+      sessionStorage.removeItem("role");
+      console.log("Logout called1");
+      window.location.href = "/signup";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <>
-        <div className='sidebar w-[20%] min-h-[100vh] border-2 border-secondary border-t-0 text-lg'>
-            <div className='sidebar-options pt-12 pl-[5%] flex flex-col gap-5 font-medium'>
-                <NavLink to="/admin/home" className='sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500'>
-                    <i className="text-2xl ri-home-4-line"></i>
-                    <p>Home</p>
-                </NavLink>
-                
-                <NavLink to="/admin/patient" className='sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500'>
-                    <i className="text-2xl ri-user-3-line"></i>
-                    <p>Add Patient</p>
-                </NavLink>
-                
-                <NavLink to="/admin/patient-list" className='sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500'>
-                    <i className="text-2xl ri-booklet-line"></i>
-                    <p>List Patient</p>
-                </NavLink>
-                
-                <NavLink to="/admin/doctor" className='sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500'>
-                    <i className="text-2xl ri-stethoscope-line"></i>
-                    <p>Add Doctor</p>
-                </NavLink>
-                
-                <NavLink to="/admin/doctor-list" className='sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500'>
-                    <i className="text-2xl ri-git-repository-line"></i>
-                    <p>List Doctor</p>
-                </NavLink>
-
-                <button
-                    onClick={logout}
-                    className="sidebar-option flex items-center gap-3 border border-secondary border-r-0 py-2 px-3 rounded-t-[3px] rounded-l-[3px] cursor-pointer hover:bg-primary hover:text-light transition-all duration-500"
-                >
-                    <i className="text-2xl ri-logout-box-r-line"></i>
-                    <p>Logout</p>
+      <div className={`h-screen bg-light p-4 flex flex-col transition-all duration-300 ${collapsed ? "w-16" : "w-64"} border-r border-gray-300`}>
+            {/* Sidebar Header */}
+            <div className="flex items-center justify-between">
+                <div className={`flex items-center gap-3 ${collapsed ? "hidden" : "block"}`}>
+                    {/* <RiBarChartLine className="text-2xl text-gray-700" /> */}
+                    <span className="text-xl font-semibold text-gray-800">Hello Admin</span>
+                </div>
+                <button onClick={() => setCollapsed(!collapsed)} className="text-gray-600 focus:outline-none">
+                    {/* <RiMenuLine className="text-2xl" /> */}
                 </button>
             </div>
+
+            {/* Sidebar Links */}
+            <nav className="flex flex-col mt-6 space-y-3">
+                <NavLink to="/admin/home" className="flex items-center gap-3 p-2 text-gray-700 rounded-lg hover:bg-gray-200">
+                    <i class="ri-home-4-line text-xl"></i>
+                    {!collapsed && <span>Dashboard</span>}
+                </NavLink>
+                
+                <NavLink to="/admin/patient" className="flex items-center gap-3 p-2 text-gray-700 rounded-lg hover:bg-gray-200">
+                    <i className="text-xl ri-user-3-line"></i>
+                    {!collapsed && <span>Add Patient</span>}
+                </NavLink>
+
+                <NavLink to="/admin/patient-list" className="flex items-center gap-3 p-2 text-gray-700 rounded-lg">
+                    <i className="text-xl ri-booklet-line"></i>
+                    {!collapsed && <span>List Patient</span>}
+                </NavLink>
+
+                <NavLink to="/admin/doctor" className="flex items-center gap-3 p-2 text-gray-700 rounded-lg hover:bg-gray-200">
+                    <i className="text-xl ri-stethoscope-line"></i>
+                    {!collapsed && <span>Add Doctor</span>}
+                </NavLink>
+
+                <NavLink to="/admin/doctor-list" className="flex items-center gap-3 p-2 text-gray-700 rounded-lg hover:bg-gray-200">
+                    <i className="text-xl ri-git-repository-line"></i>
+                    {!collapsed && <span>List Doctor</span>}
+                </NavLink>
+            </nav>
+
+            {/* Logout Button */}
+            <button
+                onClick={logout}
+                className="flex items-center gap-3 p-2 mt-auto text-gray-700 rounded-lg hover:bg-gray-200"
+            >
+                <i className="text-xl ri-logout-box-r-line"></i>
+                {!collapsed && <span>Logout</span>}
+            </button>
         </div>
     </>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;
