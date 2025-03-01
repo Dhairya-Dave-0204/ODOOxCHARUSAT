@@ -1,139 +1,132 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios"; // ✅ Added missing axios import
+import React , {useState , useEffect} from "react";
 
 function UserProfile() {
-  const [patient, setPatient] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const email = sessionStorage.getItem("email");
 
-  useEffect(() => {
-    if (!email) {
-      console.error("No email found in session");
-      setError("No email found in session.");
-      setLoading(false);
-      return;
-    }
+  // const [patient, setPatient] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState("");
+  // const email = sessionStorage.getItem("email"); 
 
-    const fetchPatient = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/fetch/findpatient", {
-          params: { email },
-        });
-        setPatient(response.data);
-      } catch (error) {
-        console.error("Error fetching patient:", error);
-        setError("Patient not found.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   if (!email) {
+  //     console.error("No email found in session");
+  //     return;
+  //   }
+  //   const fetchPatient = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:8080/fetch/findatient", {
+  //         params: { email }, // ✅ Ensures cookies are sent
+  //       });
+  //       setPatient(response.data);
+  //     } catch (error) {
+  //       setError("Patient not found");
+  //     }
+  //     setLoading(false);
+  //   };
 
-    fetchPatient();
-  }, [email]); // ✅ Added dependency to run only when `email` is available
+  //   fetchPatient();
+  // }, []);
 
-  if (loading) return <p className="text-center text-lg">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
+  // if (loading) return <p className="text-center text-lg">Loading...</p>;
+  // if (error) return <p className="text-center text-red-500">{error}</p>;
+
 
   return (
     <>
       <div className="px-10 py-6 mt-5 mb-32 sm:px-14 md:px-20 lg:px-28 xl:px-32 2xl:px-40">
-        <form className="flex flex-col col-span-4 gap-4">
-          <div className="flex flex-col justify-between md:items-center md:flex-row">
-            <h3 className="mb-1 text-3xl font-medium md:text-4xl max-md:mb-5">Personal Information</h3>
-            <button className="px-6 py-2 text-xl duration-500 rounded-md text-light bg-primary hover:scale-105">
-              Change Password
-            </button>
-          </div>
-
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-1 basis-[50%]">
-              <label htmlFor="Fullname" className="mb-2 text-xl">Full Name</label>
-              <input
-                type="text"
-                name="Fullname"
-                defaultValue={patient?.name} // ✅ Populate patient data
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
-              />
+        <div className="">
+          {/* Personal Information */}
+          <form action="" className="flex flex-col col-span-4 gap-4">
+            <div className="flex flex-col justify-between md:items-center md:flex-row">
+                <h3 className="mb-1 text-3xl font-medium md:text-4xl max-md:mb-5">Personal Information</h3>
+                <button className="px-6 py-2 text-xl duration-500  text-light bg-primary hover:scale-105">Change Password</button>
             </div>
 
-            <div className="flex flex-col gap-1 basis-[50%]">
-              <label htmlFor="Email" className="mb-2 text-xl">E-mail</label>
-              <input
-                type="email"
-                name="Email"
-                defaultValue={patient?.email} // ✅ Populate patient email
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
-                disabled
-              />
-            </div>
-          </div>
+            <div className="flex flex-col gap-5 lg:flex-row">
+              <div className="flex flex-col gap-1 basis-[50%]">
+                <label htmlFor="Fullname" className="mb-2 text-xl">Full Name</label>
+                <input
+                  type="text"
+                  name="Fullname"
+                  placeholder="Fullname"
+                  className="w-full px-3 py-1.5 border-b border-gray-400  font-light text-lg"
+                />
+              </div>
 
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-1 basis-[50%]">
-              <label htmlFor="age" className="mb-2 text-xl">Age</label>
-              <input
-                type="number"
-                name="age"
-                defaultValue={patient?.age}
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1 basis-[50%]">
-              <label htmlFor="Phone" className="mb-2 text-xl">Phone Number</label>
-              <input
-                type="tel"
-                name="Phone"
-                minLength={10}
-                maxLength={10}
-                defaultValue={patient?.contact} // ✅ Populate contact
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-1 basis-[50%]">
-              <label htmlFor="DOB" className="mb-2 text-xl">Birth Date</label>
-              <input
-                type="date"
-                name="DOB"
-                defaultValue={patient?.dob}
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
-              />
+              <div className="flex flex-col gap-1 basis-[50%]">
+                <label htmlFor="Username" className="mb-2 text-xl">E-mail</label>
+                <input
+                  type="email"
+                  name="Email"
+                  placeholder="Email"
+                  className="w-full px-3 py-1.5 border-b border-gray-400  font-light text-lg"
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col gap-1 basis-[50%]">
-              <label htmlFor="Gender" className="mb-2 text-xl">Gender</label>
-              <select
-                name="Gender"
-                defaultValue={patient?.gender} // ✅ Populate gender
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-          </div>
+            <div className="flex flex-col gap-5 lg:flex-row">
+              <div className="flex flex-col gap-1 basis-[50%]">
+                <label htmlFor="age" className="mb-2 text-xl">Age</label>
+                <input
+                  type="number"
+                  name="age"
+                  placeholder="Age"
+                  className="w-full px-3 py-1.5 border-b border-gray-400  font-light text-lg"
+                />
+              </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="Doctor" className="mb-2 text-xl">Doctor Assigned</label>
-            <input
-              type="text"
-              name="Doctor"
-              defaultValue={patient?.doctor} // ✅ Populate doctor's name
-              className="w-full px-3 py-1.5 border border-gray-400 rounded-md text-xl"
-              disabled
-            />
-          </div>
-        </form>
+              <div className="flex flex-col gap-1 basis-[50%]">
+                <label htmlFor="Phone" className="mb-2 text-xl">Phone Number</label>
+                <input
+                  type="tel"
+                  name="Phone"
+                  minLength={10}
+                  maxLength={10}
+                  placeholder="Username"
+                  className="w-full px-3 py-1.5 border-b border-gray-400  font-light text-lg"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-5 lg:flex-row">
+              <div className="flex flex-col gap-1 basis-[50%]">
+                <label htmlFor="DOB" className="mb-2 text-xl">Birth Date</label>
+                <input
+                  type="date"
+                  name="DOB"
+                  placeholder="Date of Birth"
+                  className="w-full px-3 py-1.5 border-b border-gray-400  font-light text-lg"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 basis-[50%]">
+                <label htmlFor="Gender" className="mb-2 text-xl">Gender</label>
+                <select
+                  name="Gender"
+                  id="Gender"
+                  className="w-full px-3 py-1.5 border-b border-gray-400  font-light text-lg"
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label htmlFor="Address" className="mb-2 text-xl">Address</label>
+              <textarea
+                name="Address"
+                id="Address"
+                className="w-full px-3 py-1.5 border-b border-gray-400  text-xl"
+              ></textarea>
+            </div>
+          </form>
+        </div>
 
         {/* Appointment Section */}
         <div className="mt-16">
-          <h3 className="mb-1 text-3xl font-medium md:text-4xl max-md:mb-5">Your Appointments</h3>
-          {/* Appointment details can be displayed here */}
+            <h3 className="mb-1 text-3xl font-medium md:text-4xl max-md:mb-5">Your Appointments</h3>
         </div>
       </div>
     </>

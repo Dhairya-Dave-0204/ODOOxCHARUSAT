@@ -52,8 +52,9 @@ function UserProfile() {
               <input
                 type="text"
                 name="Fullname"
+                readOnly={true} // ✅ Disable editing
                 defaultValue={patient?.name} // ✅ Populate patient data
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
+                className="w-full px-3 py-1.5 border-b border-gray-400 outline-none font-light text-lg"
               />
             </div>
 
@@ -62,8 +63,10 @@ function UserProfile() {
               <input
                 type="email"
                 name="Email"
+                readOnly={true} // ✅ Disable editing
+
                 defaultValue={patient?.email} // ✅ Populate patient email
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
+                className="w-full px-3 py-1.5 border-b border-gray-400 outline-none font-light text-lg"
                 disabled
               />
             </div>
@@ -75,8 +78,10 @@ function UserProfile() {
               <input
                 type="number"
                 name="age"
+                readOnly={true} // ✅ Disable editing
+
                 defaultValue={patient?.age}
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
+                className="w-full px-3 py-1.5 border-b border-gray-400 outline-none font-light text-lg"
               />
             </div>
 
@@ -87,8 +92,10 @@ function UserProfile() {
                 name="Phone"
                 minLength={10}
                 maxLength={10}
+                readOnly={true} // ✅ Disable editing
+
                 defaultValue={patient?.contact} // ✅ Populate contact
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
+                className="w-full px-3 py-1.5 border-b border-gray-400 outline-none font-light text-lg"
               />
             </div>
           </div>
@@ -99,22 +106,21 @@ function UserProfile() {
               <input
                 type="date"
                 name="DOB"
-                defaultValue={patient?.dob}
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
+                readOnly={true}
+                defaultValue={patient?.dob ? patient.dob.substring(0, 10) : ""} // ✅ Ensure correct format
+                className="w-full px-3 py-1.5 border-b border-gray-400 outline-none font-light text-lg"
               />
+
             </div>
 
             <div className="flex flex-col gap-1 basis-[50%]">
               <label htmlFor="Gender" className="mb-2 text-xl">Gender</label>
-              <select
+              <input
                 name="Gender"
                 defaultValue={patient?.gender} // ✅ Populate gender
-                className="w-full px-3 py-1.5 border border-gray-400 rounded-md font-light text-lg"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
+                readOnly={true} // ✅ Disable editing
+                className="w-full px-3 py-1.5 border-b border-gray-400 outline-none font-light text-lg"
+              />
             </div>
           </div>
 
@@ -123,8 +129,10 @@ function UserProfile() {
             <input
               type="text"
               name="Doctor"
+              readOnly={true} // ✅ Disable editing
+
               defaultValue={patient?.doctor} // ✅ Populate doctor's name
-              className="w-full px-3 py-1.5 border border-gray-400 rounded-md text-xl"
+              className="w-full px-3 py-1.5 border-b border-gray-400  text-xl"
               disabled
             />
           </div>
