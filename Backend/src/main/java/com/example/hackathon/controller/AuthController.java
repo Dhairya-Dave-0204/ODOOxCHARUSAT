@@ -12,16 +12,19 @@ import com.example.hackathon.repository.AppointmentRepository;
 import com.example.hackathon.service.UserService;
 import com.example.hackathon.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.hackathon.service.EmailService;
+import com.example.hackathon.service.OtpService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -54,6 +57,9 @@ public class AuthController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private OtpService otpService;
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
@@ -170,40 +176,56 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/addDoctor")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> addDoctor(@RequestBody Map<String, String> doctorData) {
+ @PostMapping("/addDoctor")
+@PreAuthorize("hasRole('ADMIN')")
+public ResponseEntity<?> addDoctor(@RequestBody Map<String, String> doctorData) {
+    try {
+        // Extract required fields
         String email = doctorData.get("email");
         String specialization = doctorData.get("specialization");
+        String name = doctorData.getOrDefault("name", "N/A");
+        String experience = doctorData.get("experience");
+        String qualification = doctorData.get("qualification");
+        String contactNumber = doctorData.get("contactNumber");
+        String languagesSpoken = doctorData.get("languagesSpoken"); // Expecting a comma-separated string
 
-        if (email == null || specialization == null) {
-            return ResponseEntity.badRequest().body("Missing required fields: email or specialization");
+        if (email == null || specialization == null || contactNumber == null || languagesSpoken == null) {
+            return ResponseEntity.badRequest().body("Missing required fields: email, specialization, contactNumber, or languagesSpoken");
         }
 
         // Check if user already exists
-        Optional<User> existingUser = userRepository.findByEmail(email);
-        if (existingUser.isPresent()) {
+        if (userRepository.findByEmail(email).isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists!");
         }
 
-        // Create a new User for Doctor
+        // Hash the default password (Admin can change later)
+        String hashedPassword = passwordEncoder.encode("defaultPass");
+
+        // Create and save the User
         User user = new User();
         user.setEmail(email);
-        user.setPassword("defaultPass"); // Admin will set password
+        user.setPassword(hashedPassword);
         user.setRole(Role.DOCTOR);
-        user.setName(doctorData.getOrDefault("name", "N/A"));
-        userRepository.save(user); // ✅ Save the User first
+        user.setName(name);
+        userRepository.save(user);
 
-        // Create a new Doctor and link it to the User
+        // Create and save the Doctor
         Doctor doctor = new Doctor();
-        doctor.setUser(user); // ✅ Link the saved User
+        doctor.setUser(user);
         doctor.setSpecialization(specialization);
+        doctor.setExperience(experience != null ? Integer.parseInt(experience) : 0);
+        doctor.setQualification(qualification != null ? qualification : "N/A");
+        doctor.setContactNumber(contactNumber);
+        doctor.setLanguagesSpoken(languagesSpoken); // Store languages as a comma-separated string
 
-        // Save Doctor
         doctorRepository.save(doctor);
 
         return ResponseEntity.ok("Doctor added successfully!");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error adding doctor: " + e.getMessage());
     }
+}
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> request) {
@@ -239,5 +261,50 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Failed to add appointment: " + e.getMessage());
         }
     }
+
+    @PostMapping("/sendOtp")
+    public ResponseEntity<?> sendOtp(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+
+        if (email == null || email.isEmpty()) {
+            return ResponseEntity.badRequest().body("Email is required!");
+        }
+
+        String otp = otpService.generateOtp(email);
+        return ResponseEntity.ok("OTP sent successfully!");
+    }
+
+    @PostMapping("/verifyOtp")
+    public ResponseEntity<?> verifyOtp(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String otp = request.get("otp");
+        System.out.println("Email: " + email + ", OTP: " + otp);
+
+        if (email == null || otp == null) {
+            return ResponseEntity.badRequest().body("Email and OTP are required!");
+        }
+
+        boolean isValid = otpService.verifyOtp(email, otp);
+        System.out.println(isValid);
+        
+        if (isValid) {
+            return ResponseEntity.ok(Map.of("verified", true, "message", "OTP verified successfully!"));
+        } else {
+            return ResponseEntity.badRequest().body(Map.of("verified", false, "message", "Invalid OTP!"));
+        }
+    }
+
+    @GetMapping("/getPatientId")
+public ResponseEntity<Map<String, Object>> getPatientId(@RequestParam String email) {
+    Optional<Patient> patient = patientRepository.findByUser_Email(email);
+    if (patient != null) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("patientId", patient.get().getPatientId());
+        return ResponseEntity.ok(response);
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message", "Patient not found"));
+    }
+}
+
 
 }
