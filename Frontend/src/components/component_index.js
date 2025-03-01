@@ -14,6 +14,7 @@ import DocHighlight from "./DocHighlight/DocHighlight";
 import AppointForm from "./AppointForm/AppointForm";
 import DocDetails from "./DocDetails/DocDetails";
 import Chatbot from "./Chatbot/Chatbot";
+import DocSidebar from "./DocSidebar/DocSidebar";
 
 import Sidebar from "./Sidebar/Sidebar";
 import ImageAdmin from "./ImageAdmin/ImageAdmin";
@@ -38,6 +39,7 @@ export {
     AppointForm,
     DocDetails,
     Chatbot,
+    DocSidebar,
     
     Sidebar,
     ImageAdmin,

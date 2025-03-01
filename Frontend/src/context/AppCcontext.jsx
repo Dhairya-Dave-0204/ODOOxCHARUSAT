@@ -5,6 +5,7 @@ export const AppContext = createContext();
 const AppContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isDoctor, setIsDoctor] = useState(true)
 
   useEffect(() => {
     const storedEmail = sessionStorage.getItem("email");
@@ -21,6 +22,8 @@ const AppContextProvider = (props) => {
     setUser,
     isAdmin,
     setIsAdmin,
+    isDoctor,
+    setIsDoctor
   };
 
   return (
