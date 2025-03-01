@@ -13,6 +13,7 @@ import DocCards from "./DocCards/DocCards";
 import DocHighlight from "./DocHighlight/DocHighlight";
 import AppointForm from "./AppointForm/AppointForm";
 import DocDetails from "./DocDetails/DocDetails";
+import Chatbot from "./Chatbot/Chatbot";
 
 import Sidebar from "./Sidebar/Sidebar";
 import ImageAdmin from "./ImageAdmin/ImageAdmin";
@@ -36,6 +37,7 @@ export {
     DocHighlight,
     AppointForm,
     DocDetails,
+    Chatbot,
     
     Sidebar,
     ImageAdmin,

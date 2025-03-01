@@ -10,6 +10,7 @@ import SignUp from "./SignUp/SignUp";
 import ForgotPass from "./ForgotPass/ForgotPass";
 import UserProfile from "./UserProfile/UserProfile";
 import ResetPassword from "./ForgotPass/ResetPassword";
+import BookAppoint from "./BookAppoint/BookAppoint";
 
 import Admin from "./Admin/admin";
 import PatientAdd from "./Admin/PatientAdd/PatientAdd";
@@ -31,8 +32,8 @@ export {
     ForgotPass,
     ChangePass,
     UserProfile,
-    
     ResetPassword,
+    BookAppoint,
 
     Admin,
     PatientAdd,
