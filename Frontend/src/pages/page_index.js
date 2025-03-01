@@ -8,6 +8,7 @@ import DocProfile1 from "./DocProfile1/DocProfile1";
 import DocCategory from "./DocCategogry/DocCategory";
 import SignUp from "./SignUp/SignUp";
 import ForgotPass from "./ForgotPass/ForgotPass";
+import UserProfile from "./UserProfile/UserProfile";
 
 import Admin from "./Admin/admin";
 import PatientAdd from "./Admin/PatientAdd/PatientAdd";
@@ -28,6 +29,7 @@ export {
     SignUp,
     ForgotPass,
     ChangePass,
+    UserProfile,
     
     Admin,
     PatientAdd,

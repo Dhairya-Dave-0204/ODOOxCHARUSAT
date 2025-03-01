@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Navbar, Footer, Sidebar } from "./components/component_index";
-import { About, Contact, FAQ, Home, Survey, DocGeneral, DocProfile1, DocCategory, SignUp, Admin, PatientAdd, DoctorAdd, DoctorList, PatientList, ForgotPass } from "./pages/page_index";
+import { About, Contact, FAQ, Home, Survey, DocGeneral, DocProfile1, DocCategory, SignUp, Admin, PatientAdd, DoctorAdd, DoctorList, PatientList, ForgotPass, UserProfile } from "./pages/page_index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AppContext } from "./context/AppCcontext";
@@ -44,6 +44,7 @@ function App() {
               <Route path="/doc-category" element={<DocCategory />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/forgot" element={<ForgotPass />} />
+              <Route path="/user-profile" element={<UserProfile />} />
             </Routes>
             <Footer />
           </>

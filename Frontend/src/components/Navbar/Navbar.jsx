@@ -39,10 +39,10 @@ function Navbar() {
   };
 
   return (
-    <nav className="flex items-center justify-between px-8 py-6 text-xl md:px-32">
+    <nav className="flex items-center justify-between px-8 py-6 text-xl border-b-2 border-b-primary md:px-32">
       <Link to="/">
         <h1 className="text-3xl font-semibold text-secondary">
-          Doc<span className=" text-primary">Appoint</span>
+          Care<span className=" text-primary">Connect</span>
         </h1>
       </Link>
 
