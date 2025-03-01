@@ -39,7 +39,7 @@ function Sidebar() {
             {/* Sidebar Links */}
             <nav className="flex flex-col mt-6 space-y-3">
                 <NavLink to="/admin/home" className="flex items-center gap-3 p-2 text-gray-700 rounded-lg hover:bg-gray-200">
-                    <i class="ri-home-4-line text-xl"></i>
+                    <i className="text-xl ri-home-4-line"></i>
                     {!collapsed && <span>Dashboard</span>}
                 </NavLink>
                 
