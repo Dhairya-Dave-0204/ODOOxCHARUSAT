@@ -22,11 +22,13 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    console.log(formData);
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", {
-        email: formData.email,
-        password: formData.password,
-      }, { withCredentials: true });
+      const response = await axios.post("http://localhost:8080/auth/login",null,
+        {
+          params: { email: formData.email, password: formData.password },
+        },
+        { withCredentials: true });
       if (response.data.status === "success") {
         sessionStorage.setItem("role", response.data.role);
         sessionStorage.setItem("email", formData.email);
@@ -55,7 +57,7 @@ function SignUp() {
   };
 
   return (
-    <div className="flex flex-col w-full h-[93vh] mb-40 xl:flex-row">
+    <div className="flex flex-col w-full h-[92vh]  xl:flex-row">
       <div className="relative flex-col justify-center hidden w-1/2 text-left text-white pl-60 xl:flex gradient-2">
         <h1 className="font-medium text-7xl">Hello from CareConnect! 👋</h1>
         <p className="max-w-md mt-8 text-xl">
@@ -92,7 +94,7 @@ function SignUp() {
               />
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
-            <button type="submit" className="w-full p-3 text-2xl text-white rounded-lg bg-primary hover:bg-secondary">
+            <button  type="submit" className="w-full p-3 text-2xl text-white rounded-lg bg-primary hover:bg-secondary">
               Login Now
             </button>
           </form>
@@ -126,3 +128,4 @@ function SignUp() {
 }
 
 export default SignUp;
+
