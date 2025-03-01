@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function PatientAdd() {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ function PatientAdd() {
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
   const [formData, setFormData] = useState(null);
+  const [loading, setLoading] = useState(false); // loading state to control the loading effect
+  const [confirming, setConfirming] = useState(false); // confirming appointment state
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -58,17 +61,21 @@ function PatientAdd() {
     try {
       await axios.post("http://localhost:8080/auth/sendOtp", { email: patientEmail });
       setOtpSent(true);
+      toast.success("OTP sent successfully");
     } catch (error) {
       console.error("Error sending OTP:", error.response ? error.response.data : error);
     }
   };
 
   const verifyOtp = async () => {
+    setLoading(true); // Start loading when verifying OTP
     try {
       const response = await axios.post("http://localhost:8080/auth/verifyOtp", { email, otp });
       console.log(response.data.verified);
 
       if (response.data.verified) {
+        setConfirming(true); // Start confirming effect after OTP verification
+
         const patientResponse = await axios.post("http://localhost:8080/auth/addPatient", formData, {
           headers: { "Content-Type": "application/json" },
         });
@@ -80,12 +87,15 @@ function PatientAdd() {
           headers: { "Content-Type": "application/json" },
         });
 
+        setConfirming(false); // Stop confirming effect after the appointment is added
         navigate("/admin/patient-list");
       } else {
         alert("Invalid OTP. Please try again.");
       }
     } catch (error) {
       console.error("OTP verification failed:", error.response ? error.response.data : error);
+    } finally {
+      setLoading(false); // Stop loading after verification attempt is done
     }
   };
 
@@ -107,8 +117,12 @@ function PatientAdd() {
           <label>Date of Appointment <input name="appoint" type={dateType2} value={date2} onFocus={() => setDateType2("date")} onBlur={() => !date2 && setDateType2("text")} onChange={(e) => setDate2(e.target.value)} required className="input-field" /></label>
           <label>Time of Appointment <input name="time" type={timeType} value={time} onFocus={() => setTimeType("time")} onBlur={() => !time && setTimeType("text")} onChange={(e) => setTime(e.target.value)} required className="input-field" /></label>
           <label>Select Doctor <select name="doctorid" required className="input-field">{doctors.map((doctor) => (<option key={doctor.id} value={doctor.id}>{doctor.name} - {doctor.specialization}</option>))}</select></label>
-          <label>Cause of Visit <input name="cause" type="text" required className="input-field" /></label>
-          <button type="submit" className="w-full py-3 mt-4 text-lg font-medium text-white bg-primary rounded-lg">Add Appointment</button>
+          <label>Cause of Visit <input name="cause" type="text" required className="input-field" />
+          </label>
+          <button type="submit" className="w-full py-3 mt-4 text-lg font-medium text-white bg-primary rounded-lg">
+  {confirming ? "Confirming, Please Wait!!" : "Add Appointment"}
+</button>
+
         </div>
       </form>
 
@@ -116,9 +130,27 @@ function PatientAdd() {
         <div className="mt-6">
           <h3 className="text-xl">Verify OTP</h3>
           <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="Enter OTP" className="input-field mt-2" />
-          <button onClick={verifyOtp} className="w-full py-2 mt-2 text-lg font-medium text-white bg-primary rounded-lg">Verify OTP</button>
+          <button onClick={verifyOtp} className="w-full py-2 mt-2 text-lg font-medium text-white bg-primary rounded-lg">
+            {loading ? "Verifying..." : "Verify OTP"}
+          </button>
+          {loading && (
+            <div className="mt-2 text-center text-gray-500">
+              <span>Loading...</span>
+            </div>
+          )}
         </div>
       )}
+
+{confirming && (
+  <div className="mt-6">
+    <h3 className="text-xl">Confirming Appointment...</h3>
+    <div className="text-lg">
+      <span>Confirming</span>
+      <span className="animate-ping text-gray-500">...</span>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

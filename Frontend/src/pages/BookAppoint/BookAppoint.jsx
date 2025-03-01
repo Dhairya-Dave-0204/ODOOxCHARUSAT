@@ -10,12 +10,14 @@ function BookAppoint() {
   const [timeType, setTimeType] = useState("text");
   const email = sessionStorage.getItem("email");
   const [doctors, setDoctors] = useState([]);
-  const [patientId, setPatientId] = useState(null); // Add patientId state
+  const [patientId, setPatientId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [formData, setFormData] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetching doctors
     const fetchDoctors = async () => {
       try {
         const response = await axios.get("http://localhost:8080/fetch/alldoctors");
@@ -28,7 +30,6 @@ function BookAppoint() {
   }, []);
 
   useEffect(() => {
-    // Check if email exists in sessionStorage
     if (!email) {
       toast.error("Please Login First");
       navigate("/signup");
@@ -36,12 +37,11 @@ function BookAppoint() {
       return;
     }
 
-    // Fetch patientId based on the email
     const fetchPatientId = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/auth/getPatientId?email=${email}`);
         if (response.data && response.data.patientId) {
-          setPatientId(response.data.patientId); // Store the patientId in state
+          setPatientId(response.data.patientId);
         } else {
           toast.error("Patient not found!");
         }
@@ -56,43 +56,53 @@ function BookAppoint() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const form = e.target;
     const doctorId = form.doctorid.value;
     const cause = form.cause.value;
 
-    // Validate all required fields
     if (!date || !time || !doctorId || !cause || !patientId) {
       toast.error("Please fill in all the fields");
       return;
     }
 
-    // Data to be sent to the backend
-    const appointmentData = {
+    setFormData({
       date: form.appoint.value,
       time: form.time.value,
       doctorId: doctorId,
       cause: cause,
-      patientId: patientId, // Using the patientId from the state
-    };
+      patientId: patientId,
+    });
 
     try {
-      setLoading(true);
-      const response = await axios.post("http://localhost:8080/auth/addAppointment", appointmentData, {
-        headers: { "Content-Type": "application/json" },
-      });
+      await axios.post("http://localhost:8080/auth/sendOtp", { email });
+      setOtpSent(true);
+    } catch (error) {
+      console.error("Error sending OTP:", error.response ? error.response.data : error);
+    }
+  };
 
-      if (response.status === 200) {
-        toast.success("Appointment booked successfully");
-        navigate("/user-profile");
+  const verifyOtp = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/auth/verifyOtp", { email, otp });
+      if (response.data.verified) {
+        const appointmentData = { ...formData, patientId };
+
+        const appointmentResponse = await axios.post("http://localhost:8080/auth/addAppointment", appointmentData, {
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (appointmentResponse.status === 200) {
+          toast.success("Appointment booked successfully");
+          navigate("/user-profile");
+        } else {
+          toast.error("Failed to book appointment");
+        }
       } else {
-        toast.error("Failed to book appointment");
+        alert("Invalid OTP. Please try again.");
       }
     } catch (error) {
-      console.error("Error booking appointment:", error);
-      toast.error("An error occurred while booking the appointment");
-    } finally {
-      setLoading(false);
+      console.error("OTP verification failed:", error.response ? error.response.data : error);
+      toast.error("OTP verification failed");
     }
   };
 
@@ -162,22 +172,38 @@ function BookAppoint() {
           </button>
         </form>
 
-        <style jsx>{`
-          .input-field {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            outline: none;
-            font-size: 16px;
-            transition: border 0.3s ease;
-            background-color: white;
-          }
-          .input-field:focus {
-            border-color: #3b82f6;
-          }
-        `}</style>
+        {otpSent && (
+          <div className="mt-6">
+            <h3 className="text-xl">Verify OTP</h3>
+            <input
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="Enter OTP"
+              className="input-field mt-2"
+            />
+            <button onClick={verifyOtp} className="w-full py-2 mt-2 text-lg font-medium text-white bg-primary rounded-lg">
+              Verify OTP
+            </button>
+          </div>
+        )}
       </div>
+
+      <style jsx>{`
+        .input-field {
+          width: 100%;
+          padding: 10px;
+          border: 2px solid #e5e7eb;
+          border-radius: 8px;
+          outline: none;
+          font-size: 16px;
+          transition: border 0.3s ease;
+          background-color: white;
+        }
+        .input-field:focus {
+          border-color: #3b82f6;
+        }
+      `}</style>
     </>
   );
 }
