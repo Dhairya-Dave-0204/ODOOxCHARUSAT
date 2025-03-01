@@ -108,6 +108,7 @@ public class FetchController {
         patientData.put("doctor", patient.getDoctor().getUser().getName());
         patientData.put("gender", patient.getGender());
         patientData.put("contact", patient.getContact());
+        patientData.put("dob", patient.getDob());
 
         return ResponseEntity.ok(patientData);
     }
@@ -116,6 +117,22 @@ public class FetchController {
 @PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<?> getAllAppointments() {
     List<Appointment> appointments = appointmentRepository.findAll();
+    return ResponseEntity.ok(appointments);
+}
+
+@GetMapping("/patientappointments")
+@PreAuthorize("hasAnyRole('ADMIN', 'PATIENT')")
+public ResponseEntity<?> getPatientAppointments(@RequestParam String email) {
+    Optional<Patient> patient = patientRepository.findByUser_Email(email);
+    
+    if (patient.isEmpty()) {
+        return ResponseEntity.badRequest().body("Patient not found!");
+    }
+
+    List<Appointment> appointments = appointmentRepository.findByPatient(patient.get());
+
+    
+    
     return ResponseEntity.ok(appointments);
 }
 
