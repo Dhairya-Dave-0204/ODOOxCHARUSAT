@@ -1,9 +1,8 @@
-import React , {useEffect} from "react";
+import React, { useEffect } from "react";
 import assets from "../../assets/assets";
 import { useNavigate } from "react-router-dom";
 
 function About() {
-
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top when component mounts
@@ -17,9 +16,10 @@ function About() {
           A Legacy of Compassionate Care!
         </h2>
         <p className="mb-4 font-light">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi
-          voluptate optio autem facere eligendi at ex dolor qui ad aliquid!
-          Lorem ipsum dolor sit amet, consectetur adipisici
+          Our team of experienced professionals is committed to delivering
+          quality care with empathy and excellence. We leverage innovative
+          technology to bring healthcare to your fingertips, ensuring
+          convenience and reliability.
         </p>
 
         <div className="flex flex-col gap-6 mb-6 md:flex-row md:gap-8">
@@ -40,9 +40,12 @@ function About() {
           </div>
         </div>
 
-          <button onClick={() => navigate("/about")} className="px-3 py-2 text-white transition-all duration-500 rounded-lg bg-primary md:px-4 md:py-3 md:font-medium md:text-lg hover:scale-105">
-            View more
-          </button>
+        <button
+          onClick={() => navigate("/about")}
+          className="px-3 py-2 text-white transition-all duration-500 rounded-lg bg-primary md:px-4 md:py-3 md:font-medium md:text-lg hover:scale-105"
+        >
+          View more
+        </button>
       </div>
 
       <div className="basis-1/2">

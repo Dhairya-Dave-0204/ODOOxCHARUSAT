@@ -11,12 +11,12 @@ function ListPracticeBanner({padding}) {
         <div className='basis-1/2'>
             <h3 className='text-base font-light opacity-70 md:text-base'>DocAppoint for private practices</h3>
             <h2 className='mb-3 text-2xl'>Are you a provider interested in reaching new patients?</h2>
-            <ul className='mb-3 text-lg list-disc'>
+            <ul className='mb-3 text-lg font-light list-disc'>
                 <li>Reach patients in your area looking for a new provider</li>
                 <li>Fill last-minute openings in your schedule</li>
                 <li>Strengthen your online reputation with verified reviews</li>
             </ul>
-            <button className='px-5 py-3 font-medium text-white transition-all duration-500 bg-primary hover:scale-105 rounded-xl'>
+            <button className='px-5 py-3 text-lg text-white transition-all duration-500 bg-primary hover:scale-105 rounded-xl'>
               List your practice
             </button>
         </div>

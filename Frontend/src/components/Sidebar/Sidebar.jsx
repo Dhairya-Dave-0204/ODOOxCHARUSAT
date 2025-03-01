@@ -48,7 +48,7 @@ function Sidebar() {
                     {!collapsed && <span>Add Patient</span>}
                 </NavLink>
 
-                <NavLink to="/admin/patient-list" className="flex items-center gap-3 p-2 text-gray-700 rounded-lg">
+                <NavLink to="/admin/patient-list" className="flex items-center gap-3 p-2 text-gray-700 rounded-lg hover:bg-gray-200">
                     <i className="text-xl ri-booklet-line"></i>
                     {!collapsed && <span>List Patient</span>}
                 </NavLink>
