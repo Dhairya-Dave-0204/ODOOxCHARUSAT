@@ -4,8 +4,6 @@ import "./App.css";
 import { Navbar, Footer, Sidebar } from "./components/component_index";
 import { About, Contact, FAQ, Home, Survey, DocGeneral, DocProfile1, DocCategory, SignUp, Admin, PatientAdd, DoctorAdd, DoctorList, PatientList, ForgotPass, ResetPassword,UserProfile } from "./pages/page_index";
 import { ToastContainer, toast } from "react-toastify";
-// import { About, Contact, FAQ, Home, Survey, DocGeneral, DocProfile1, DocCategory, SignUp, Admin, PatientAdd, DoctorAdd, DoctorList, PatientList, ForgotPass , ResetPassword } from "./pages/page_index";
-// import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AppContext } from "./context/AppCcontext";
 
@@ -41,6 +39,7 @@ function App() {
               <Route path="/admin/doctor" element={<DoctorAdd />} />
               <Route path="/admin/patient-list" element={<PatientList />} />
               <Route path="/admin/doctor-list" element={<DoctorList />} />
+              <Route path="/admin/user-profile" element={<UserProfile />} />
             </Routes>
           </div>
         </div>
