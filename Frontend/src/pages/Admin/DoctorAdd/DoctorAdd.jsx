@@ -1,40 +1,74 @@
-import axios from 'axios';
-import React from 'react'
+import axios from "axios";
+import React, { useState } from "react";
+
+const languages = [
+  "English",
+  "Hindi",
+  "Gujarati",
+  "Tamil",
+  "Telugu",
+  "Kannada",
+  "Marathi",
+  "Russian",
+];
 
 function DoctorAdd() {
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSubmit = async(e) => {
-    
-    e.preventDefault(); 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     const formData = {
-     name: e.target.name.value,
-     email: e.target.mail.value,
-     specialization: e.target.gender.value,
-     password: e.target.password.value
-    }
+      name: e.target.name.value,
+      email: e.target.mail.value,
+      specialization: e.target.specialization.value,
+      password: e.target.password.value,
+      experience: e.target.experience.value,
+      qualification: e.target.qualification.value,
+      contactNumber: e.target.contactNumber.value,
+      languagesSpoken: selectedLanguages,
+    };
 
     console.log("Submitting:", formData);
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/addDoctor", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8080/auth/addDoctor",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log("Success:", response.data);
+    } catch (error) {
+      console.error(
+        "Doctor registration failed:",
+        error.response ? error.response.data : error
+      );
     }
-    catch (error) {
-      console.error("Doctor registration failed:", error.response ? error.response.data : error);
-    }
+  };
 
+  const handleSelect = (language) => {
+    if (!selectedLanguages.includes(language)) {
+      setSelectedLanguages([...selectedLanguages, language]);
+    }
+  };
+
+  const handleRemove = (language) => {
+    setSelectedLanguages(selectedLanguages.filter((l) => l !== language));
   };
 
   return (
-    <>
-      <div className="w-[70%] ml-5 mt-5 md:ml-16 md:mt-14 text-lg add">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <h2 className='mb-3 text-4xl'>Doctor Details</h2>
+    <div className="w-[90%] mx-auto mt-10 text-lg">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-10 md:flex-row"
+      >
+        <div className="flex flex-col flex-1 gap-5">
+          <h2 className="mb-3 text-4xl">Doctor Information</h2>
           <div className="flex flex-col gap-3">
             <label htmlFor="name">Full Name</label>
             <input
@@ -58,14 +92,14 @@ function DoctorAdd() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <label htmlFor="gender">Specialization</label>
+            <label htmlFor="specialization">Specialization</label>
             <select
-              name="gender"
+              name="specialization"
               required
               className="px-5 py-3 font-light border border-gray-300 rounded-lg outline-none focus:border-primary"
             >
               <option value="" disabled selected>
-                Select
+                Select Specialization
               </option>
               <option value="Primary">Primary Care</option>
               <option value="General">General Surgery</option>
@@ -90,11 +124,109 @@ function DoctorAdd() {
               className="px-5 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary"
             />
           </div>
-        <button type="submit" className="px-8 py-3 mt-6 text-xl font-medium text-white transition-all duration-500 rounded-lg cursor-pointer hover:scale-105 bg-primary">Submit</button>
-        </form>
-      </div>
-    </>
-  )
+        </div>
+
+        <div className="flex flex-col flex-1 gap-5">
+          <h2 className="mb-3 text-4xl">Doctor Background</h2>
+          <div className="flex flex-col gap-3">
+            <label htmlFor="experience">Experience (in years)</label>
+            <input
+              type="number"
+              name="experience"
+              required
+              placeholder="Experience"
+              className="px-5 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary"
+            />
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <label htmlFor="qualification">Qualification</label>
+            <input
+              type="text"
+              name="qualification"
+              required
+              placeholder="Qualification"
+              className="px-5 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary"
+            />
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <label htmlFor="contactNumber">Contact Number</label>
+            <input
+              type="tel"
+              name="contactNumber"
+              required
+              placeholder="Contact Number"
+              className="px-5 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary"
+            />
+          </div>
+
+          <div className="flex flex-col gap-3 ">
+            <label>Languages Spoken</label>
+            <div className="w-full font-light">
+              <div className="relative font-light">
+                <button
+                  type="button"
+                  className="w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  <span className="block truncate">
+                    {selectedLanguages.length > 0
+                      ? selectedLanguages.join(", ")
+                      : "Select languages"}
+                  </span>
+                </button>
+
+                {isDropdownOpen && (
+                  <ul className="absolute z-10 w-full py-1 mt-1 overflow-auto bg-white border border-gray-200 rounded-md shadow-lg max-h-60">
+                    {languages.map((language, index) => (
+                      <li
+                        key={index}
+                        className={`cursor-pointer py-2 pl-3 pr-4 hover:bg-gray-100 ${
+                          selectedLanguages.includes(language)
+                            ? "font-medium"
+                            : "font-normal"
+                        }`}
+                        onClick={() => handleSelect(language)}
+                      >
+                        {language}
+                        {selectedLanguages.includes(language) && (
+                          <span className="ml-2 text-green-500">✔</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="mt-2 space-x-2">
+                {selectedLanguages.map((language) => (
+                  <span
+                    key={language}
+                    className="inline-flex items-center px-2 py-1 text-sm text-gray-700 bg-gray-200 rounded-full"
+                  >
+                    {language}
+                    <button
+                      className="ml-1 text-red-500 hover:text-red-700 focus:outline-none"
+                      onClick={() => handleRemove(language)}
+                    >
+                      ✕
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <button
+          type="submit"
+          className="w-full px-8 py-3 mt-6 text-xl font-medium text-white transition-all duration-500 rounded-lg md:w-auto bg-primary hover:scale-105"
+        >
+          Submit
+        </button>
+    </div>
+  );
 }
 
-export default DoctorAdd
+export default DoctorAdd;
