@@ -42,6 +42,7 @@ function SignUp() {
         if(response.data.role === "ADMIN"){
           // navigate("/admin/home");
           window.location.href = "/admin/home";
+          
         }
         else{
         window.location.href = "/";

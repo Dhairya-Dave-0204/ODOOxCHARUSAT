@@ -1,7 +1,6 @@
 package com.example.hackathon.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +19,21 @@ public class Doctor {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Ensure that User is properly imported
+    private User user;
 
     @Column(nullable = false)
     private String specialization;
+
+    @Column(nullable = false)
+    private int experience;
+
+    @Column(nullable = false)
+    private String qualification;
+
+    @Column(nullable = false, unique = true)
+    private String contactNumber;
+
+    @Column(nullable = false)
+    private String languagesSpoken; // Store languages as comma-separated values (CSV)
+
 }
