@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -37,6 +38,7 @@ function SignUp() {
       if (response.data.status === "success") {
         sessionStorage.setItem("role", response.data.role);
         sessionStorage.setItem("email", formData.email);
+        toast.success("Welcome" + response.data.role)
         alert("Welcome " + response.data.role);
         window.location.href = "/";
       } else {
@@ -49,6 +51,7 @@ function SignUp() {
 
   const handleForgotPassword = async () => {
     if (!forgotEmail) {
+      toast.error("Please enter your email")
       alert("Please enter your email");
       return;
     }
@@ -67,14 +70,16 @@ function SignUp() {
 
       clearInterval(interval); // ✅ Stop animation
       setLoading(false);
+      toast.info(response.data.message || "Check your email for reset instructions.")
       alert(response.data.message || "Check your email for reset instructions.");
       setShowForgotPassword(false);
     } catch (error) {
       clearInterval(interval); // ✅ Stop animation on error
       setLoading(false);
+      toast.error("Error sending email. Please try again later.")
       alert("Error sending email. Please try again later.");
     }
-  };
+  }; 
 
   return (
     <div className="flex flex-col w-full h-[92vh] xl:flex-row">

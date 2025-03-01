@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={true}/>
       
       {isAdmin ? (
         <div className="flex min-h-screen">
