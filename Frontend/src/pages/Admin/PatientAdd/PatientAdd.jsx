@@ -160,6 +160,22 @@ function PatientAdd() {
           <button type="submit" className="w-full py-3 mt-4 text-lg font-medium text-white transition duration-500 rounded-lg bg-primary hover:bg-secondary">Add Appointment</button>
         </div>
       </form>
+
+      <style jsx>{`
+        .input-field {
+          width: 100%;
+          padding: 10px;
+          border: 2px solid #e5e7eb;
+          border-radius: 8px;
+          outline: none;
+          font-size: 16px;
+          transition: border 0.3s ease;
+          background-color: white;
+        }
+        .input-field:focus {
+          border-color: #3b82f6;
+        }
+      `}</style>
     </div>
   );
 }
