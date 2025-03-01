@@ -36,4 +36,6 @@ public class Doctor {
     @Column(nullable = false)
     private String languagesSpoken; // Store languages as comma-separated values (CSV)
 
+    @Column(nullable = true)  // Default is null
+    private String prescription; // Default is null (if not set)
 }
