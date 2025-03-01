@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.hackathon.bean.Doctor;
@@ -78,4 +82,28 @@ public class FetchController {
         return ResponseEntity.ok(patientList);
 
     }
+
+    // findpatient
+    @GetMapping("/findpatient")
+    public ResponseEntity<Map<String, Object>> findPatient(@RequestParam String email) {
+        Optional<Patient> patientOptional = patientRepository.findByUser_Email(email);
+
+        if (patientOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Patient not found!"));
+        }
+
+        Patient patient = patientOptional.get();
+
+        Map<String, Object> patientData = new HashMap<>();
+        patientData.put("id", patient.getPatientId());
+        patientData.put("name", patient.getUser().getName());
+        patientData.put("email", patient.getUser().getEmail());
+        patientData.put("age", patient.getAge());
+        patientData.put("doctor", patient.getDoctor().getUser().getName());
+        patientData.put("gender", patient.getGender());
+        patientData.put("contact", patient.getContact());
+
+        return ResponseEntity.ok(patientData);
+    }
+
 }
