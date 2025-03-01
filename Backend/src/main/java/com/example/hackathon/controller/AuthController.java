@@ -143,7 +143,7 @@ public class AuthController {
                          "Your temporary password is: " + formattedDob + "\n\n" +
                          "Best Regards,\nCareConnect Team";
     
-        emailService.sendEmail(user.getEmail(), subject, message);
+        emailService.sendEmail(user.getEmail(), subject, message,true);
     
         return ResponseEntity.ok("Patient added successfully!");
     }
@@ -183,4 +183,13 @@ public class AuthController {
         return ResponseEntity.ok("Doctor added successfully!");
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> request) {
+        return ResponseEntity.ok(userService.sendResetEmail(request.get("email")));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) {
+        return ResponseEntity.ok(userService.resetPassword(request.get("token"), request.get("newPassword")));
+    }
 }

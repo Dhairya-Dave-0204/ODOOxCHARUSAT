@@ -1,6 +1,7 @@
 package com.example.hackathon.bean;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,9 @@ public class User implements Serializable{
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;  // ADMIN, DOCTOR, PATIENT
+
+     private String resetToken; // Unique reset token
+    private LocalDateTime tokenExpiry; // Expiry time for token
 
    
     
