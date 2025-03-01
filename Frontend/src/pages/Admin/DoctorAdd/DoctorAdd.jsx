@@ -34,6 +34,7 @@ function DoctorAdd() {
     <>
       <div className="w-[70%] ml-5 mt-5 md:ml-16 md:mt-14 text-lg add">
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <h2 className='mb-3 text-4xl'>Doctor Details</h2>
           <div className="flex flex-col gap-3">
             <label htmlFor="name">Full Name</label>
             <input
@@ -41,7 +42,7 @@ function DoctorAdd() {
               name="name"
               required
               placeholder="Full Name"
-              className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500"
+              className="px-5 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary"
             />
           </div>
 
@@ -52,7 +53,7 @@ function DoctorAdd() {
               name="mail"
               required
               placeholder="E-mail address"
-              className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500"
+              className="px-5 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary"
             />
           </div>
 
@@ -61,7 +62,7 @@ function DoctorAdd() {
             <select
               name="gender"
               required
-              className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500"
+              className="px-5 py-3 font-light border border-gray-300 rounded-lg outline-none focus:border-primary"
             >
               <option value="" disabled selected>
                 Select
@@ -86,7 +87,7 @@ function DoctorAdd() {
               minLength={8}
               maxLength={14}
               placeholder="Password"
-              className="px-5 py-3 border-2 rounded-lg outline-none focus:border-primary border-slate-500"
+              className="px-5 py-3 border border-gray-300 rounded-lg outline-none focus:border-primary"
             />
           </div>
         <button type="submit" className="px-8 py-3 mt-6 text-xl font-medium text-white transition-all duration-500 rounded-lg cursor-pointer hover:scale-105 bg-primary">Submit</button>
