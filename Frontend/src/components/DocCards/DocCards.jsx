@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 // WILL BE DONE USING MAP METHOD DYNAMICALLY FROM DATABASE BUT IS STATIC NOW
 
-function DocCards({heading}) {
-
-  const navigate = useNavigate()
+function DocCards({ heading }) {
+  const navigate = useNavigate();
 
   return (
     <>
@@ -16,17 +15,32 @@ function DocCards({heading}) {
 
       <div className="grid grid-cols-1 gap-6 px-12 py-6 mb-20 md:grid-cols-2 xl:grid-cols-4 xl:px-40">
         {doctors.map((item) => {
-          return(
+          return (
             <div className="flex flex-col items-center justify-center p-5 transition-all duration-500 border rounded-lg border-slate-200 hover:shadow-lg">
-              <div key={item.id} className="w-32 h-32 p-1 rounded-[50%] border-4 border-primary mb-3">
-                <img src={item.image} alt={item.name} className="rounded-[50%] w-full h-full"/>
+              <div
+                key={item.id}
+                className="w-32 h-32 p-1 rounded-[50%] border-4 border-primary mb-3"
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="rounded-[50%] w-full h-full"
+                />
               </div>
               <h2 className="text-2xl font-medium">{item.name}</h2>
               <h4 className="mb-2 font-medium">{item.speciality}</h4>
-              <p className="mb-2 font-light max-w-56">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-              <button onClick={() => navigate("/doc-profile")} className="px-3 py-2 text-white transition-all duration-500 rounded-lg bg-primary hover:scale-110">Appoint</button>
+              <p className="mb-2 font-light max-w-60">
+                Doctor is a highly experienced and compassionate
+                medical professional in specialization
+              </p>
+              <button
+                onClick={() => navigate("/doc-profile")}
+                className="px-3 py-2 text-white transition-all duration-500 rounded-lg bg-primary hover:scale-110"
+              >
+                Appoint
+              </button>
             </div>
-          )
+          );
         })}
       </div>
     </>
