@@ -39,7 +39,7 @@ function DocSidebar() {
             className="flex items-center gap-3 p-2 text-gray-700 rounded-lg hover:bg-gray-200"
           >
             <i className="text-2xl ri-user-3-line"></i>
-            {!collapsed && <span>Doctor Profile</span>}
+            {!collapsed ? <span className="max-sm:hidden">Doctor Profile</span> : ""}
           </NavLink>
 
           <NavLink
@@ -47,14 +47,14 @@ function DocSidebar() {
             className="flex items-center gap-3 p-2 text-gray-700 rounded-lg hover:bg-gray-200"
           >
             <i className="text-2xl ri-booklet-line"></i>
-            {!collapsed && <span>All Appointments</span>}
+            {!collapsed ? <span className="max-sm:hidden">All Appointments</span> : ""}
           </NavLink>
 
           <button
             className="flex items-center gap-3 p-2 mt-auto text-gray-700 rounded-lg hover:bg-gray-200"
           >
             <i className="text-2xl ri-logout-box-r-line"></i>
-            {!collapsed && <span>Logout</span>}
+            {!collapsed && <span className="max-sm:hidden">Logout</span>}
           </button>
         </nav>
       </div>
