@@ -9,14 +9,17 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.hackathon.bean.Appointment;
 import com.example.hackathon.bean.Doctor;
 import com.example.hackathon.bean.Patient;
+import com.example.hackathon.repository.AppointmentRepository;
 import com.example.hackathon.repository.DoctorRepository;
 import com.example.hackathon.repository.PatientRepository;
 import com.example.hackathon.repository.UserRepository;
@@ -38,6 +41,9 @@ public class FetchController {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private AppointmentRepository   appointmentRepository;
 
     @GetMapping("/alldoctors")
     public ResponseEntity<List<Map<String, Object>>> allDoctors() {
@@ -105,5 +111,13 @@ public class FetchController {
 
         return ResponseEntity.ok(patientData);
     }
+
+    @GetMapping("/appointments")
+@PreAuthorize("hasRole('ADMIN')")
+public ResponseEntity<?> getAllAppointments() {
+    List<Appointment> appointments = appointmentRepository.findAll();
+    return ResponseEntity.ok(appointments);
+}
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.hackathon.controller;
 
+import com.example.hackathon.bean.Appointment;
 import com.example.hackathon.bean.Doctor;
 import com.example.hackathon.bean.Patient;
 import com.example.hackathon.bean.Role;
@@ -7,7 +8,9 @@ import com.example.hackathon.bean.User;
 import com.example.hackathon.repository.DoctorRepository;
 import com.example.hackathon.repository.PatientRepository;
 import com.example.hackathon.repository.UserRepository;
+import com.example.hackathon.repository.AppointmentRepository;
 import com.example.hackathon.service.UserService;
+import com.example.hackathon.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,11 +20,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.hackathon.service.EmailService;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/auth")
@@ -39,6 +42,12 @@ public class AuthController {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -101,21 +110,21 @@ public class AuthController {
         if (!patientData.containsKey("email") || !patientData.containsKey("doctorId")) {
             return ResponseEntity.badRequest().body("Missing required fields: email or doctorId");
         }
-    
+
         String email = (String) patientData.get("email");
-    
+
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists!");
         }
-    
+
         Long doctorId = Long.valueOf(patientData.get("doctorId").toString());
-    
+
         Optional<Doctor> doctor = doctorRepository.findById(doctorId);
         if (doctor.isEmpty()) {
             return ResponseEntity.badRequest().body("Doctor not found with ID: " + doctorId);
         }
-    
+
         User user = new User();
         user.setEmail(email);
         String dob = (String) patientData.getOrDefault("dob", "2000-01-01");
@@ -124,7 +133,7 @@ public class AuthController {
         user.setRole(Role.PATIENT);
         user.setName((String) patientData.getOrDefault("name", "N/A"));
         userRepository.save(user);
-    
+
         Patient patient = new Patient();
         patient.setUser(user);
         patient.setAge(Integer.parseInt(patientData.getOrDefault("age", "0").toString()));
@@ -132,22 +141,35 @@ public class AuthController {
         patient.setGender((String) patientData.getOrDefault("gender", "Other"));
         patient.setDob(dob);
         patient.setDoctor(doctor.get());
-    
+
         patientRepository.save(patient);
-    
+
         // ✅ Send email after successful registration
         String subject = "Welcome to CareConnect!";
         String message = "Hello " + user.getName() + ",\n\n" +
-                         "Your account has been created successfully.\n" +
-                         "Login using your email: " + user.getEmail() + "\n" +
-                         "Your temporary password is: " + formattedDob + "\n\n" +
-                         "Best Regards,\nCareConnect Team";
-    
-        emailService.sendEmail(user.getEmail(), subject, message,true);
-    
-        return ResponseEntity.ok("Patient added successfully!");
+                "Your account has been created successfully.\n" +
+                "Login using your email: " + user.getEmail() + "\n" +
+                "Your temporary password is: " + formattedDob + "\n\n" +
+                "Best Regards,\nCareConnect Team";
+
+        emailService.sendEmail(user.getEmail(), subject, message, true);
+
+        Optional<Patient> patientid = patientRepository.findByUser_Email(email);
+        if(patientid.isEmpty()) {
+            return ResponseEntity.badRequest().body("Patient not found!");
+        }
+        else
+        {
+            System.out.println("Patient ID: " + patientid.get().getPatientId());
+        }
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Patient added successfully!");
+        response.put("patientId", patientid.get().getPatientId()); // Include patient ID
+
+        return ResponseEntity.ok(response);
     }
-    
+
     @PostMapping("/addDoctor")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addDoctor(@RequestBody Map<String, String> doctorData) {
@@ -192,4 +214,30 @@ public class AuthController {
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) {
         return ResponseEntity.ok(userService.resetPassword(request.get("token"), request.get("newPassword")));
     }
+
+    @PostMapping("/addAppointment")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATIENT')")
+    public ResponseEntity<?> addAppointment(@RequestBody Map<String, Object> request) {
+        try {
+            Long patientId = Long.valueOf(request.get("patientId").toString());
+            Long doctorId = Long.valueOf(request.get("doctorId").toString());
+            String dateStr = request.get("date").toString();
+            String timeStr = request.get("time").toString();
+            String cause = request.get("cause").toString();
+
+            LocalDate date = LocalDate.parse(dateStr);
+            LocalTime time = LocalTime.parse(timeStr);
+
+            Appointment appointment = new Appointment();
+            appointment.setDate(date);
+            appointment.setTime(time);
+            appointment.setCause(cause);
+
+            String savedAppointment = appointmentService.addAppointment(patientId, doctorId, appointment);
+            return ResponseEntity.ok(String.format("Appointment added successfully: %s", savedAppointment));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to add appointment: " + e.getMessage());
+        }
+    }
+
 }

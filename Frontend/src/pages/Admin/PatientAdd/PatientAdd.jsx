@@ -1,17 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function PatientAdd() {
+  const navigate = useNavigate();
+
   const [date1, setDate1] = useState("");
   const [date2, setDate2] = useState("");
   const [time, setTime] = useState("");
-  const [dateType2, setDateType2] = useState("text"); // Initially text to show placeholder
-  const [dateType1, setDateType1] = useState("text"); // Initially text to show placeholder
-  const [timeType, setTimeType] = useState("text"); // Initially text to show placeholder
+  const [dateType2, setDateType2] = useState("text");
+  const [dateType1, setDateType1] = useState("text");
+  const [timeType, setTimeType] = useState("text");
+  const [doctors, setDoctors] = useState([]);
 
-  const [doctors, setDoctors] = useState([]); // State to store doctors
-
-  // ✅ Fetch doctors from backend
   useEffect(() => {
     document.querySelectorAll('input[type="text"]').forEach((input) => {
       let placeholder = input.getAttribute("data-placeholder");
@@ -22,8 +23,8 @@ function PatientAdd() {
       try {
         const response = await axios.get(
           "http://localhost:8080/fetch/alldoctors"
-        ); // Update with your API endpoint
-        setDoctors(response.data); // Assuming API returns an array of doctors
+        );
+        setDoctors(response.data);
       } catch (error) {
         console.error("Failed to fetch doctors:", error);
       }
@@ -36,8 +37,7 @@ function PatientAdd() {
     e.preventDefault();
     const form = e.target;
 
-    // ✅ Construct FormData properly
-    const formData = {
+    const patientData = {
       name: form.name.value,
       email: form.mail.value,
       contact: form.phone.value,
@@ -51,22 +51,52 @@ function PatientAdd() {
       },
     };
 
-    console.log("Submitting:", formData);
-
     try {
-      const response = await axios.post(
+      // ✅ Step 1: Store patient details
+      const patientResponse = await axios.post(
         "http://localhost:8080/auth/addPatient",
-        formData,
+        patientData,
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      console.log("Success:", response.data);
+
+      const patientId = patientResponse.data.patientId; // Get the stored patient ID
+
+      console.log("Patient added successfully:", patientResponse.data);
+
+      // ✅ Step 2: Store appointment details
+      const appointmentData = {
+        patientId: patientId,
+        doctorId: form.doctorid.value,
+        date: form.appoint.value,
+        time: form.time.value,
+        cause: form.cause.value,
+      };
+
+      console.log("Sending Appointment Data:", appointmentData);
+
+
+      const appointmentResponse = await axios.post(
+        "http://localhost:8080/auth/addAppointment",
+        appointmentData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Appointment added successfully:", appointmentResponse.data);
+
+      // ✅ Redirect to admin dashboard
+      navigate("/admin/patient-list");
+
     } catch (error) {
       console.error(
-        "Patient registration failed:",
+        "Error while adding patient or appointment:",
         error.response ? error.response.data : error
       );
     }
@@ -125,27 +155,11 @@ function PatientAdd() {
             </select>
           </label>
           <label htmlFor="cause" className="flex flex-col gap-1">Cause of Visit
-            <input name="cause" type="text" value={time} placeholder="Select a time" required className="input-field" />
+            <input name="cause" type="text" placeholder="Enter reason for visit" required className="input-field" />
           </label>
           <button type="submit" className="w-full py-3 mt-4 text-lg font-medium text-white transition duration-500 rounded-lg bg-primary hover:bg-secondary">Add Appointment</button>
         </div>
       </form>
-
-      <style jsx>{`
-      .input-field {
-        width: 100%;
-        padding: 10px;
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        outline: none;
-        font-size: 16px;
-        transition: border 0.3s ease;
-        background-color: white;
-      }
-      .input-field:focus {
-        border-color: #00acb1;
-      }
-    `}</style>
     </div>
   );
 }
