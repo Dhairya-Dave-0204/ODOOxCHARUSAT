@@ -1,6 +1,34 @@
 import React from "react";
+import AppointCard from "./AppointCard";
 
 function UserProfile() {
+  const appointments = [
+    {
+      doctorName: "Dr. John Doe",
+      specialization: "Cardiologist",
+      date: "2025-03-05",
+      time: "10:30 AM",
+    },
+    {
+      doctorName: "Dr. Sarah Smith",
+      specialization: "Dermatologist",
+      date: "2025-03-06",
+      time: "11:00 AM",
+    },
+    {
+      doctorName: "Dr. Emily Brown",
+      specialization: "Pediatrician",
+      date: "2025-03-07",
+      time: "09:30 AM",
+    },
+    {
+      doctorName: "Dr. Michael Green",
+      specialization: "Orthopedic",
+      date: "2025-03-08",
+      time: "01:00 PM",
+    },
+  ];
+
   return (
     <>
       <div className="px-10 py-6 mt-5 mb-32 sm:px-14 md:px-20 lg:px-28 xl:px-32 2xl:px-40">
@@ -8,13 +36,19 @@ function UserProfile() {
           {/* Personal Information */}
           <form action="" className="flex flex-col col-span-4 gap-4">
             <div className="flex flex-col justify-between md:items-center md:flex-row">
-                <h3 className="mb-1 text-3xl font-medium md:text-4xl max-md:mb-5">Personal Information</h3>
-                <button className="px-6 py-2 text-xl duration-500 rounded-md text-light bg-primary hover:scale-105">Change Password</button>
+              <h3 className="mb-1 text-3xl font-medium md:text-4xl max-md:mb-5">
+                Personal Information
+              </h3>
+              <button className="px-6 py-2 text-xl duration-500 rounded-md text-light bg-primary hover:scale-105">
+                Change Password
+              </button>
             </div>
 
             <div className="flex flex-col gap-5 lg:flex-row">
               <div className="flex flex-col gap-1 basis-[50%]">
-                <label htmlFor="Fullname" className="mb-2 text-xl">Full Name</label>
+                <label htmlFor="Fullname" className="mb-2 text-xl">
+                  Full Name
+                </label>
                 <input
                   type="text"
                   name="Fullname"
@@ -24,7 +58,9 @@ function UserProfile() {
               </div>
 
               <div className="flex flex-col gap-1 basis-[50%]">
-                <label htmlFor="Username" className="mb-2 text-xl">E-mail</label>
+                <label htmlFor="Username" className="mb-2 text-xl">
+                  E-mail
+                </label>
                 <input
                   type="email"
                   name="Email"
@@ -36,7 +72,9 @@ function UserProfile() {
 
             <div className="flex flex-col gap-5 lg:flex-row">
               <div className="flex flex-col gap-1 basis-[50%]">
-                <label htmlFor="age" className="mb-2 text-xl">Age</label>
+                <label htmlFor="age" className="mb-2 text-xl">
+                  Age
+                </label>
                 <input
                   type="number"
                   name="age"
@@ -46,7 +84,9 @@ function UserProfile() {
               </div>
 
               <div className="flex flex-col gap-1 basis-[50%]">
-                <label htmlFor="Phone" className="mb-2 text-xl">Phone Number</label>
+                <label htmlFor="Phone" className="mb-2 text-xl">
+                  Phone Number
+                </label>
                 <input
                   type="tel"
                   name="Phone"
@@ -60,7 +100,9 @@ function UserProfile() {
 
             <div className="flex flex-col gap-5 lg:flex-row">
               <div className="flex flex-col gap-1 basis-[50%]">
-                <label htmlFor="DOB" className="mb-2 text-xl">Birth Date</label>
+                <label htmlFor="DOB" className="mb-2 text-xl">
+                  Birth Date
+                </label>
                 <input
                   type="date"
                   name="DOB"
@@ -70,7 +112,9 @@ function UserProfile() {
               </div>
 
               <div className="flex flex-col gap-1 basis-[50%]">
-                <label htmlFor="Gender" className="mb-2 text-xl">Gender</label>
+                <label htmlFor="Gender" className="mb-2 text-xl">
+                  Gender
+                </label>
                 <select
                   name="Gender"
                   id="Gender"
@@ -84,7 +128,9 @@ function UserProfile() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="Address" className="mb-2 text-xl">Address</label>
+              <label htmlFor="Address" className="mb-2 text-xl">
+                Address
+              </label>
               <textarea
                 name="Address"
                 id="Address"
@@ -96,7 +142,17 @@ function UserProfile() {
 
         {/* Appointment Section */}
         <div className="mt-16">
-            <h3 className="mb-1 text-3xl font-medium md:text-4xl max-md:mb-5">Your Appointments</h3>
+          <h3 className="mb-1 text-3xl font-medium md:text-4xl max-md:mb-5">
+            Your Appointments
+          </h3>
+
+          <div className="p-6">
+            <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3 ">
+              {appointments.map((appointment, index) => (
+                <AppointCard key={index} appointment={appointment} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>
