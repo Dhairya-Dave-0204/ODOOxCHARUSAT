@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="top-center" autoClose={3000}/>
       
       {isAdmin ? (
         <div className="flex min-h-screen">

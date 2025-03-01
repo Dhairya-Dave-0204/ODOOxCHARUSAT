@@ -34,6 +34,7 @@ import shield from "./shield.png"
 import star from "./star.png"
 
 import admin_banner from "./admin_banner.svg"
+import admin_banner_photo from "./admin_banner.png"
 
 const assets = {
     about_banner,
@@ -72,6 +73,7 @@ const assets = {
     star,
 
     admin_banner,
+    admin_banner_photo,
 }
 
 export default assets

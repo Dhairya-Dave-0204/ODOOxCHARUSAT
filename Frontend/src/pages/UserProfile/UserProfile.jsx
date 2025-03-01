@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"; // ✅ Added missing axios import
 import AppointCard from "./AppointCard";
 import { useNavigate } from "react-router-dom"; // ✅ Removed unused import
+import { toast } from "react-toastify";
 
 
 function UserProfile() {
@@ -16,7 +17,7 @@ function UserProfile() {
     if (!email) {
       console.error("No email found in session");
       setError("No email found in session.");
-      alert("Please Login First");
+      toast.error("Please Login First");
       navigate("/signup"); // ✅ Redirect to signup page
       // window.location.href = "/signup";
       setLoading(false);
