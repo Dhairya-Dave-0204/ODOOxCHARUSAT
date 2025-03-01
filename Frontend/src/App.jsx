@@ -57,7 +57,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgot" element={<ForgotPass />} />
             <Route path="/reset" element={<ResetPassword />} />
-            <Route path="/admin/user-profile" element={<UserProfile />} />
+            <Route path="/user-profile" element={<UserProfile />} />
           </Routes>
 
           {/* ✅ Hide Footer if current path is in hideFooterRoutes */}
