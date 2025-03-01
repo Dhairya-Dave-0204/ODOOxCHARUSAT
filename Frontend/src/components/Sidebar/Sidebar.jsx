@@ -62,16 +62,15 @@ function Sidebar() {
                     <i className="text-xl ri-git-repository-line"></i>
                     {!collapsed && <span>List Doctor</span>}
                 </NavLink>
-            </nav>
 
-            {/* Logout Button */}
-            <button
+                <button
                 onClick={logout}
                 className="flex items-center gap-3 p-2 mt-auto text-gray-700 rounded-lg hover:bg-gray-200"
             >
                 <i className="text-xl ri-logout-box-r-line"></i>
                 {!collapsed && <span>Logout</span>}
             </button>
+            </nav>
         </div>
     </>
   );
