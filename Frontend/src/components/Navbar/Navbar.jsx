@@ -129,16 +129,10 @@ function Navbar() {
             <li>Home</li>
           </Link>
           <Link
-            to={"/movie"}
+            to={"/doc-general"}
             className="transition-all duration-700 decoration-primary hover:text-primary hover:underline underline-offset-4"
           >
-            <li>Movies</li>
-          </Link>
-          <Link
-            to={"/event"}
-            className="transition-all duration-700 decoration-primary hover:text-primary hover:underline underline-offset-4"
-          >
-            <li>Events</li>
+            <li>Doctor</li>
           </Link>
           <Link
             to={"/contact"}
@@ -151,6 +145,12 @@ function Navbar() {
             className="transition-all duration-700 decoration-primary hover:text-primary hover:underline underline-offset-4"
           >
             <li>About Us</li>
+          </Link>
+          <Link
+            to={"/user-profile"}
+            className="transition-all duration-700 decoration-primary hover:text-primary hover:underline underline-offset-4"
+          >
+            <li>Profile</li>
           </Link>
           {!user.email ? (
             <Link
