@@ -23,9 +23,26 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+    
     try {
       const response = await axios.post(
+        "http://localhost:8080/api/reports/generate",
+        null,
+        {
+          params: { email: formData.email },
+        },
+        { withCredentials: true }
+      );
+      // const response3 = await axios.post(
+      //   "http://localhost:8080/api/reports/upload",
+      //   null,
+      //   {
+         
+      //     headers:{"Content-Type":"multipart/form-data"}
+      //   },
+      //   { withCredentials: true }
+      // );
+      const response1 = await axios.post(
         "http://localhost:8080/auth/login",
         null,
         {

@@ -6,6 +6,7 @@ import { About, Contact, FAQ, Home, Survey, DocGeneral, DocProfile1, DocCategory
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AppContext } from "./context/AppCcontext";
+import Button from "./pages/Button";
 
 function App() {
   const { isAdmin } = useContext(AppContext);
@@ -58,6 +59,7 @@ function App() {
             <Route path="/forgot" element={<ForgotPass />} />
             <Route path="/reset" element={<ResetPassword />} />
             <Route path="/user-profile" element={<UserProfile />} />
+            <Route path="/button" element={<Button />} />
           </Routes>
 
           {/* ✅ Hide Footer if current path is in hideFooterRoutes */}

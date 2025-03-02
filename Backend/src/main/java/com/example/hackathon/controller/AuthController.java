@@ -54,6 +54,7 @@ public class AuthController {
 
         if (user.isPresent()) {
             session.setAttribute("user", user.get());
+            session.setAttribute("email", email);
             response.put("status", "success");
             response.put("role", user.get().getRole().toString());
             response.put("message", "Login successful!");
