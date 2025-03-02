@@ -44,6 +44,11 @@ function SignUp() {
           window.location.href = "/admin/home";
           
         }
+        else if(response.data.role === "DOCTOR"){
+          // navigate("/doctor/home");
+          
+          window.location.href = "/doctor-profile";
+        }
         else{
         window.location.href = "/";
         }

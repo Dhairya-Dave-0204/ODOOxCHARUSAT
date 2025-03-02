@@ -4,14 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import com.example.hackathon.bean.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     List<Appointment> findByPatient(Patient patient);
-    // Optional<Appointment> findByUser_Email(String email);
+
+    List<Appointment> findByDoctor(Doctor doctorId);
+
     
-    // Optional<Appointment> findByUser(User user);
-    
-    // Appointment findByID(Long id);
     
 }

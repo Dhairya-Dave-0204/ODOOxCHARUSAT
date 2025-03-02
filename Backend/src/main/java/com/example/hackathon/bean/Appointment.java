@@ -1,9 +1,7 @@
 package com.example.hackathon.bean;
 
 import java.time.*;
-
 import jakarta.persistence.*;
-// import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +27,8 @@ public class Appointment {
     
     private String cause;
 
+    private String prescription; // ✅ New field added for storing prescription
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
@@ -36,8 +36,4 @@ public class Appointment {
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
-
-    
-
-    // Getters & Setters
 }

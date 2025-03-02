@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +26,7 @@ import com.example.hackathon.repository.AppointmentRepository;
 import com.example.hackathon.repository.DoctorRepository;
 import com.example.hackathon.repository.PatientRepository;
 import com.example.hackathon.repository.UserRepository;
+import com.example.hackathon.service.AppointmentService;
 import com.example.hackathon.service.UserService;
 
 @RestController
@@ -44,6 +48,9 @@ public class FetchController {
 
     @Autowired
     private AppointmentRepository   appointmentRepository;
+
+    @Autowired
+    private AppointmentService appointmentService;  
 
     @GetMapping("/alldoctors")
     public ResponseEntity<List<Map<String, Object>>> allDoctors() {
@@ -134,6 +141,24 @@ public ResponseEntity<?> getPatientAppointments(@RequestParam String email) {
     
     
     return ResponseEntity.ok(appointments);
+}
+
+
+@GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByDoctor(@PathVariable Doctor doctorId) {
+        List<Appointment> appointments = appointmentRepository.findByDoctor(doctorId);
+        return ResponseEntity.ok(appointments);
+    }
+    
+@PutMapping("/appointments/{appointmentId}")
+public ResponseEntity<?> updateAppointment(@PathVariable Long appointmentId, @RequestBody Map<String, String> request) {
+    String prescription = request.get("prescription");
+    try {
+        Appointment updatedAppointment = appointmentService.updateAppointment(appointmentId, prescription);
+        return ResponseEntity.ok(updatedAppointment);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body("Error updating appointment: " + e.getMessage());
+    }
 }
 
 

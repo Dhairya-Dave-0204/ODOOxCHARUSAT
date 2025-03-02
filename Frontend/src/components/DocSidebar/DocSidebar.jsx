@@ -5,6 +5,23 @@ import { NavLink } from "react-router-dom";
 function DocSidebar() {
   const [collapsed, setCollapsed] = useState(false);
 
+  const logout = async () => {
+    console.log("Logout called");
+    try {
+      await axios.post(
+        "http://localhost:8080/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      sessionStorage.removeItem("email");
+      sessionStorage.removeItem("role");
+      console.log("Logout called1");
+      window.location.href = "/signup";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <>
       <div
@@ -51,6 +68,7 @@ function DocSidebar() {
           </NavLink>
 
           <button
+          onClick={logout}
             className="flex items-center gap-3 p-2 mt-auto text-gray-700 rounded-lg hover:bg-gray-200"
           >
             <i className="text-2xl ri-logout-box-r-line"></i>
