@@ -80,6 +80,7 @@ function App() {
           {!isDoctor ? (
             <>
               <Navbar />
+              <Chatbot />
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
