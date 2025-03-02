@@ -26,16 +26,14 @@ function About() {
           <div className="p-4 border-2 shadow-xl basis-1/2 border-slate-100 rounded-xl">
             <h3 className="mb-2 text-xl font-medium">Our Vission</h3>
             <p className="text-sm">
-              Lorem ipsum dolor sit amet consectetur. Vestibulum elit eu
-              vulputate tristique enim.
+            We aim to inspire and empower our community through innovative solutions.
             </p>
           </div>
 
           <div className="p-4 border-2 shadow-xl basis-1/2 border-slate-100 rounded-xl">
             <h3 className="mb-2 text-xl font-medium">Our Mission</h3>
             <p className="text-sm">
-              Lorem ipsum dolor sit amet consectetur. Vestibulum elit eu
-              vulputate tristique enim.
+            Our mission is to provide exceptional service and solutions that exceed customers' expectations.
             </p>
           </div>
         </div>

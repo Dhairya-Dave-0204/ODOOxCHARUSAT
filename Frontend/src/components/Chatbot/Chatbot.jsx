@@ -44,13 +44,13 @@ function Chatbot() {
 
       {/* Chatbot Container */}
       {showChatbot && (
-        <div className="fixed bottom-20 right-8 w-full max-w-lg flex flex-col bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden sm:w-96">
+        <div className="fixed bottom-20 max-h-[30rem] right-8 w-full max-w-lg flex flex-col bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden sm:w-96">
           {/* Header */}
           <div className="flex items-center justify-between p-4 bg-primary">
             <h2 className="text-lg font-semibold">Lung Cancer AI Chatbot</h2>
             <button
               onClick={() => setShowChatbot(false)}
-              className="text-white"
+              className="text-white cursor-pointer"
             >
               <i className="fa-solid fa-x" />
             </button>

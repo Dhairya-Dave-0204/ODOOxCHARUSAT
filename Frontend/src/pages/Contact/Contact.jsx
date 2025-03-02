@@ -24,7 +24,7 @@ function Contact() {
     } else {
       toast.error(message);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,9 +69,9 @@ function Contact() {
           Contact Us
         </h2>
         <p className="px-3 text-sm text-center md:text-lg">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis,
-          modi molestias
-          <br /> et sapiente praesentium quaerat?
+          We'd love to hear from you! Whether you have a question, feedback, or
+          just want to connect, feel free to reach out.
+          <br /> Our team is always here to assist you and ensure you have the best experience. 
         </p>
       </div>
 
