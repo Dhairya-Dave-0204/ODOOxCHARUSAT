@@ -38,8 +38,10 @@ public class UserService {
             String storedHashedPassword = user.get().getPassword();
             System.out.println("Stored Hashed Password: " + storedHashedPassword);
             System.out.println(passwordEncoder.encode(password));
+            System.out.println(password);
 
-            if (passwordEncoder.matches(password, storedHashedPassword)) {
+            // if (passwordEncoder.matches(password, storedHashedPassword)) {
+                if (password.equals(storedHashedPassword)) {
                 return user;
             } else {
                 System.out.println("Password does not match!");
