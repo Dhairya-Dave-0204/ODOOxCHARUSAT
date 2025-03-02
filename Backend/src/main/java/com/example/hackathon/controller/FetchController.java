@@ -8,6 +8,7 @@ import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -143,13 +144,35 @@ public ResponseEntity<?> getPatientAppointments(@RequestParam String email) {
     return ResponseEntity.ok(appointments);
 }
 
+@GetMapping("/doctor/profile/{doctorId}")
+public ResponseEntity<?> getDoctorProfile(@PathVariable Long doctorId) {
+    Optional<Doctor> doctorOpt = doctorRepository.findById(doctorId);
+
+    if (doctorOpt.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor not found");
+    }
+
+    Doctor doctor = doctorOpt.get();
+    Map<String, Object> response = new HashMap<>();
+    response.put("doctorId", doctor.getDoctorId());
+    response.put("name", doctor.getUser().getName());
+    response.put("email", doctor.getUser().getEmail());
+    response.put("specialization", doctor.getSpecialization());
+    response.put("experience", doctor.getExperience());
+    response.put("qualification", doctor.getQualification());
+    response.put("contactNumber", doctor.getContactNumber());
+    response.put("languagesSpoken", doctor.getLanguagesSpoken());
+
+    return ResponseEntity.ok(response);
+}
+
 
 @GetMapping("/doctor/{doctorId}")
     public ResponseEntity<List<Appointment>> getAppointmentsByDoctor(@PathVariable Doctor doctorId) {
         List<Appointment> appointments = appointmentRepository.findByDoctor(doctorId);
         return ResponseEntity.ok(appointments);
     }
-    
+
 @PutMapping("/appointments/{appointmentId}")
 public ResponseEntity<?> updateAppointment(@PathVariable Long appointmentId, @RequestBody Map<String, String> request) {
     String prescription = request.get("prescription");
