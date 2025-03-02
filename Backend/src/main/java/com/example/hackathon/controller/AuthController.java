@@ -239,29 +239,51 @@ public class AuthController {
     }
 
     @PostMapping("/addAppointment")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PATIENT')")
-    public ResponseEntity<?> addAppointment(@RequestBody Map<String, Object> request) {
-        try {
-            Long patientId = Long.valueOf(request.get("patientId").toString());
-            Long doctorId = Long.valueOf(request.get("doctorId").toString());
-            String dateStr = request.get("date").toString();
-            String timeStr = request.get("time").toString();
-            String cause = request.get("cause").toString();
+@PreAuthorize("hasAnyRole('ADMIN', 'PATIENT')")
+public ResponseEntity<?> addAppointment(@RequestBody Map<String, Object> request) {
+    try {
+        Long patientId = Long.valueOf(request.get("patientId").toString());
+        Long doctorId = Long.valueOf(request.get("doctorId").toString());
+        String dateStr = request.get("date").toString();
+        String timeStr = request.get("time").toString();
+        String cause = request.get("cause").toString();
 
-            LocalDate date = LocalDate.parse(dateStr);
-            LocalTime time = LocalTime.parse(timeStr);
+        LocalDate date = LocalDate.parse(dateStr);
+        LocalTime time = LocalTime.parse(timeStr);
 
-            Appointment appointment = new Appointment();
-            appointment.setDate(date);
-            appointment.setTime(time);
-            appointment.setCause(cause);
+        Appointment appointment = new Appointment();
+        appointment.setDate(date);
+        appointment.setTime(time);
+        appointment.setCause(cause);
 
-            String savedAppointment = appointmentService.addAppointment(patientId, doctorId, appointment);
-            return ResponseEntity.ok(String.format("Appointment added successfully: %s", savedAppointment));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to add appointment: " + e.getMessage());
+        // Save appointment
+        String savedAppointment = appointmentService.addAppointment(patientId, doctorId, appointment);
+
+        // Fetch patient details
+        Optional<Patient> patientOpt = patientRepository.findById(patientId);
+        if (patientOpt.isPresent()) {
+            Patient patient = patientOpt.get();
+            String patientEmail = patient.getUser().getEmail();
+            String patientName = patient.getUser().getName();
+
+            // Send email notification
+            String subject = "Appointment Confirmation - CareConnect";
+            String message = String.format(
+                "Dear %s,\n\nYour appointment has been successfully booked.\n\n" +
+                "📅 Date: %s\n⏰ Time: %s\n🩺 Doctor ID: %d\n📌 Reason: %s\n\n" +
+                "Thank you for using CareConnect!\n\nBest Regards,\nCareConnect Team",
+                patientName, date, time, doctorId, cause
+            );
+
+            emailService.sendEmail(patientEmail, subject, message, false);
         }
+
+        return ResponseEntity.ok(String.format("Appointment added successfully: %s", savedAppointment));
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body("Failed to add appointment: " + e.getMessage());
     }
+}
+
 
     @PostMapping("/sendOtp")
     public ResponseEntity<?> sendOtp(@RequestBody Map<String, String> request) {
