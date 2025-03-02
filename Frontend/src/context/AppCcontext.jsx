@@ -4,7 +4,7 @@ export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
   const [user, setUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
   const [isDoctor, setIsDoctor] = useState(false)
 
   useEffect(() => {
