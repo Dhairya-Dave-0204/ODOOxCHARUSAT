@@ -88,6 +88,12 @@ function Navbar() {
             <li>Contact Us</li>
           </Link>
           <Link
+            to="/appoint"
+            className="transition-all duration-500 hover:scale-110 hover:text-primary"
+          >
+            <li>Appointment</li>
+          </Link>
+          <Link
             to="/user-profile"
             className="transition-all duration-500 hover:scale-110 hover:text-primary"
           >
@@ -139,6 +145,12 @@ function Navbar() {
             className="transition-all duration-700 decoration-primary hover:text-primary hover:underline underline-offset-4"
           >
             <li>Contact Us</li>
+          </Link>
+          <Link
+            to={"/appoint"}
+            className="transition-all duration-700 decoration-primary hover:text-primary hover:underline underline-offset-4"
+          >
+            <li>Appoint</li>
           </Link>
           <Link
             to={"/about"}

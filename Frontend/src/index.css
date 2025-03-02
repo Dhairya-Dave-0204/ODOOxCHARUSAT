@@ -9,6 +9,9 @@
   --color-light: #FEFFFE;
   --color-text: #131B23;
 
+  --color-rgba: rgba(0, 172, 177, 0.3);
+  --color-hoverrgba: rgba(0, 172, 177, 0.6);
+
   --font-kanit: 'Kanit', sans-serif;
 }
 
