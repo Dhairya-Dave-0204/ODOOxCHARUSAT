@@ -17,6 +17,7 @@ public class CorsConfig {
         config.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // React frontend URL
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        config.setAllowedHeaders(Arrays.asList("*")); // Allow all headers
         config.setAllowCredentials(true); // Allow credentials (cookies, auth headers)
 
         // Apply configuration to all endpoints
