@@ -25,10 +25,14 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/fetch/**").permitAll()  // ✅ Allow GET requests under `/fetch/`
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/api/reports/create").permitAll()
+
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/doctor/**").hasAuthority("DOCTOR")
                 .requestMatchers("/").hasAuthority("PATIENT")
-                .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.POST,"/api/reports/**").permitAll()
+                .anyRequest().permitAll()
             )
             .formLogin().disable()
             .httpBasic().disable();
