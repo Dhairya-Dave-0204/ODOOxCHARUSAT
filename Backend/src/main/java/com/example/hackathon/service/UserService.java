@@ -31,17 +31,28 @@ public class UserService {
     // return Optional.empty();
     // }
 
+    public Optional<User> updatePass(String email , String password) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            User existingUser = user.get();
+            existingUser.setPassword(passwordEncoder.encode(password)); // Encrypt new password
+            userRepository.save(existingUser);
+            return Optional.of(existingUser);
+        }
+        return Optional.empty();
+    }
+
     public Optional<User> authenticate(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);
 
         if (user.isPresent()) {
             String storedHashedPassword = user.get().getPassword();
             System.out.println("Stored Hashed Password: " + storedHashedPassword);
-            System.out.println(passwordEncoder.encode(password));
-            System.out.println(password);
+            // System.out.println(passwordEncoder.encode(password));
+            // System.out.println(passwordEncoder.encode(password));
 
-            // if (passwordEncoder.matches(password, storedHashedPassword)) {
-                if (password.equals(storedHashedPassword)) {
+            if (passwordEncoder.matches(password, storedHashedPassword)) {
+                System.out.println(password);
                 return user;
             } else {
                 System.out.println("Password does not match!");

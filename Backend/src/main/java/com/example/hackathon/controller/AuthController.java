@@ -53,7 +53,7 @@ public class AuthController {
     private AppointmentService appointmentService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;    
 
     @Autowired
     private EmailService emailService;
@@ -66,21 +66,16 @@ public class AuthController {
         System.out.println("Login request received for : " + email);
         Optional<User> user = userService.authenticate(email, password);
         Map<String, String> response = new HashMap<>();
-
-        if (user.isPresent()) {
-            session.setAttribute("user", user.get());
-<<<<<<< HEAD
-
-=======
-            session.setAttribute("email", email);
->>>>>>> 31ff75ccd8fa95b99e91070a44c2195b8a2a7ee7
-            response.put("status", "success");
-            response.put("role", user.get().getRole().toString());
-            response.put("message", "Login successful!");
-        } else {
-            response.put("status", "error");
-            response.put("message", "Invalid credentials!");
-        }
+        System.out.println(user.isPresent());
+            if (user.isPresent()) {
+                session.setAttribute("user", user.get());
+                response.put("status", "success");
+                response.put("role", user.get().getRole().toString());
+                response.put("message", "Login successful!");
+            } else {
+                response.put("status", "error");
+                response.put("message", "Invalid credentials!");
+            }
         return response;
     }
 

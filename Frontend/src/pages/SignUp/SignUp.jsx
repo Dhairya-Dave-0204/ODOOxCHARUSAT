@@ -26,14 +26,14 @@ function SignUp() {
     setError("");
     
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/reports/generate",
-        null,
-        {
-          params: { email: formData.email },
-        },
-        { withCredentials: true }
-      );
+      // const response = await axios.post(
+      //   "http://localhost:8080/api/reports/generate",
+      //   null,
+      //   {
+      //     params: { email: formData.email },
+      //   },
+      //   { withCredentials: true }
+      // );
       // const response3 = await axios.post(
       //   "http://localhost:8080/api/reports/upload",
       //   null,
@@ -43,7 +43,7 @@ function SignUp() {
       //   },
       //   { withCredentials: true }
       // );
-      const response1 = await axios.post(
+      const response = await axios.post(
         "http://localhost:8080/auth/login",
         null,
         {
@@ -53,6 +53,7 @@ function SignUp() {
       );
 
       if (response.data.status === "success") {
+        
         sessionStorage.setItem("role", response.data.role);
         sessionStorage.setItem("email", formData.email);
         toast.success("Welcome" + response.data.role)
@@ -198,3 +199,5 @@ function SignUp() {
 }
 
 export default SignUp;
+
+

@@ -78,7 +78,6 @@ function App() {
         </div>
       ) : (
         <>
-<<<<<<< HEAD
           {!isDoctor ? (
             <>
               <Navbar />
@@ -115,24 +114,6 @@ function App() {
           )}
 
           {/* { <Chatbot />} */}
-=======
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/survey" element={<Survey />} />
-            <Route path="/doc-general" element={<DocGeneral />} />
-            <Route path="/doc-profile" element={<DocProfile1 />} />
-            <Route path="/doc-category" element={<DocCategory />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/forgot" element={<ForgotPass />} />
-            <Route path="/reset" element={<ResetPassword />} />
-            <Route path="/user-profile" element={<UserProfile />} />
-            <Route path="/button" element={<Button />} />
-          </Routes>
->>>>>>> 31ff75ccd8fa95b99e91070a44c2195b8a2a7ee7
 
           {/* ✅ Hide Footer if current path is in hideFooterRoutes */}
           {!hideFooterRoutes.includes(location.pathname) && <Footer />}
