@@ -45,3 +45,7 @@ export {
     PatientList,
     DoctorList,
 }
+
+export { default as AddPdf } from './AddPdf.jsx';
+export { default as AddPdfAdmin } from './Admin/AddPdfAdmin.jsx';
+export { default as MyReports } from './MyReports.jsx';

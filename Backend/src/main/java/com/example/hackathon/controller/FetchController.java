@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.hackathon.bean.Appointment;
 import com.example.hackathon.bean.Doctor;
 import com.example.hackathon.bean.Patient;
+import com.example.hackathon.bean.Role;
+import com.example.hackathon.bean.User;
 import com.example.hackathon.repository.AppointmentRepository;
 import com.example.hackathon.repository.DoctorRepository;
 import com.example.hackathon.repository.PatientRepository;
@@ -184,5 +186,46 @@ public ResponseEntity<?> updateAppointment(@PathVariable Long appointmentId, @Re
     }
 }
 
+@GetMapping("/allpatientsbyrole")
+public ResponseEntity<List<Map<String, Object>>> allPatientsByRole() {
+    List<User> patients = userRepository.findByRole(Role.PATIENT);
+    List<Map<String, Object>> patientList = new ArrayList<>();
+    for (User user : patients) {
+        Map<String, Object> patientData = new HashMap<>();
+        patientData.put("id", user.getUserId());
+        patientData.put("name", user.getName());
+        patientData.put("email", user.getEmail());
+        // Try to get patient details from Patient table
+        Optional<Patient> patientOpt = patientRepository.findByUser(user);
+        if (patientOpt.isPresent()) {
+            Patient patient = patientOpt.get();
+            patientData.put("age", patient.getAge());
+            patientData.put("gender", patient.getGender());
+            patientData.put("contact", patient.getContact());
+            if (patient.getDoctor() != null && patient.getDoctor().getUser() != null) {
+                patientData.put("doctor", patient.getDoctor().getUser().getName());
+            } else {
+                patientData.put("doctor", "N/A");
+            }
+        } else {
+            patientData.put("age", "N/A");
+            patientData.put("gender", "N/A");
+            patientData.put("contact", "N/A");
+            patientData.put("doctor", "N/A");
+        }
+        patientList.add(patientData);
+    }
+    return ResponseEntity.ok(patientList);
+}
+
+@GetMapping("/userid")
+public ResponseEntity<Map<String, Object>> getUserIdByEmail(@RequestParam String email) {
+    Optional<User> user = userRepository.findByEmail(email);
+    if (user.isPresent()) {
+        return ResponseEntity.ok(Map.of("userId", user.get().getUserId()));
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+    }
+}
 
 }

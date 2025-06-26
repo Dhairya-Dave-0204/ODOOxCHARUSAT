@@ -29,6 +29,9 @@ import {
   BookAppoint,
   DoctorProfile,
   DoctorAppoint,
+  AddPdf,
+  AddPdfAdmin,
+  MyReports,
 } from "./pages/page_index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -73,6 +76,8 @@ function App() {
               <Route path="/admin/doctor" element={<DoctorAdd />} />
               <Route path="/admin/patient-list" element={<PatientList />} />
               <Route path="/admin/doctor-list" element={<DoctorList />} />
+              <Route path="/admin/add-pdf" element={<AddPdfAdmin />} />
+              <Route path="/my-reports" element={<MyReports />} />
             </Routes>
           </div>
         </div>
@@ -96,6 +101,8 @@ function App() {
                 <Route path="/reset" element={<ResetPassword />} />
                 <Route path="/user-profile" element={<UserProfile />} />
                 <Route path="/appoint" element={<BookAppoint />} />
+                <Route path="/add-pdf" element={<AddPdf />} />
+                <Route path="/my-reports" element={<MyReports />} />
               </Routes>
             </>
           ) : (

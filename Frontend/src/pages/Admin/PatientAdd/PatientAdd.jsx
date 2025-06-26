@@ -19,6 +19,7 @@ function PatientAdd() {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false); // loading state to control the loading effect
   const [confirming, setConfirming] = useState(false); // confirming appointment state
+  const [doctorError, setDoctorError] = useState("");
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -28,7 +29,8 @@ function PatientAdd() {
         );
         setDoctors(response.data);
       } catch (error) {
-        console.error("Failed to fetch doctors:", error);
+        setDoctorError("Failed to fetch doctors. Please try again later.");
+        setDoctors([]);
       }
     };
     fetchDoctors();
@@ -122,6 +124,8 @@ function PatientAdd() {
 
   return (
     <div className="flex flex-col items-center p-6 md:p-12">
+      {loading && <div className="mb-4 text-lg text-primary">Loading...</div>}
+      {doctorError && <div className="mb-4 text-red-500">{doctorError}</div>}
       <form
         onSubmit={handleSubmit}
         className="w-full  flex flex-col md:flex-row gap-6 p-6 rounded-lg"
@@ -228,20 +232,16 @@ function PatientAdd() {
             />
           </label>
           <label className="flex flex-col gap-1">
-            Select Doctor
-            <select name="doctorid" required className="input-field">
+            Doctor
+            <select name="doctorid" required className="input-field" disabled={!!doctorError || doctors.length === 0}>
               <option value="" disabled selected>
-                Select a Doctor
+                {doctorError ? "No doctors available" : "Select Doctor"}
               </option>
-              {doctors.length > 0 ? (
-                doctors.map((doctor) => (
-                  <option key={doctor.id} value={doctor.id}>
-                    {doctor.name} - {doctor.specialization}
-                  </option>
-                ))
-              ) : (
-                <option disabled>Loading doctors...</option>
-              )}
+              {doctors.map((doc) => (
+                <option key={doc.id} value={doc.id}>
+                  {doc.name} ({doc.email})
+                </option>
+              ))}
             </select>
           </label>
           <label className="flex flex-col gap-1">

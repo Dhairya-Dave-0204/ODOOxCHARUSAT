@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom";
 import assets from "../../../assets/assets";
 import axios from "axios";
 
-
 function PatientList() {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/fetch/allpatients"); // Fetch from backend
+        const response = await axios.get("http://localhost:8080/fetch/allpatientsbyrole"); // Fetch patients by role
         setPatients(response.data);
         setLoading(false);
       } catch (error) {
@@ -21,9 +21,28 @@ function PatientList() {
         setLoading(false);
       }
     };
-
     fetchPatients();
   }, []);
+
+  const handleAddPatient = () => {
+    navigate('/admin/patient');
+  };
+
+  const handleEdit = (id) => {
+    // If you have a patient edit page, navigate to it. Otherwise, show an alert.
+    // navigate(`/admin/patient-edit/${id}`);
+    alert(`Edit patient with ID: ${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this patient?')) return;
+    try {
+      await axios.delete(`http://localhost:8080/api/patients/${id}`); // Adjust endpoint as needed
+      setPatients(patients.filter(p => p.id !== id));
+    } catch (error) {
+      alert('Failed to delete patient.');
+    }
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -35,7 +54,7 @@ function PatientList() {
        <div className="p-6 mx-auto mt-5 bg-white rounded-lg shadow-md">
       <div className="flex items-center justify-between mb-4 border-b border-gray-400">
         <h2 className="text-2xl font-semibold">PATIENT LIST</h2>
-        <button className="px-4 py-2 text-xl transition-all duration-500 cursor-pointer text-primary hover:text-secondary">
+        <button className="px-4 py-2 text-xl transition-all duration-500 cursor-pointer text-primary hover:text-secondary" onClick={handleAddPatient}>
           Add Patient
         </button>
       </div>
@@ -67,17 +86,17 @@ function PatientList() {
                 <tr key={patient.id} className="border-b border-gray-400 hover:bg-gray-100">
                   <td className="flex items-center p-3 space-x-2">
                     {/* <img src={patient.image} alt="Profile" className="w-12 h-12 rounded-full" /> */}
-                    <span>{patient.name}</span>
+                    <span>{patient.name || 'N/A'}</span>
                   </td>
-                  <td className="p-3">{patient.gender}</td>
+                  <td className="p-3">{patient.gender || 'N/A'}</td>
                   {/* <td className="p-3">{patient.disease}</td> */}
-                  <td className="p-3">{patient.age}</td>
-                  <td className="p-3">{patient.contact}</td>
-                  <td className="p-3">{patient.email}</td>
-                  <td className="p-3">{patient.doctor}</td>
+                  <td className="p-3">{patient.age || 'N/A'}</td>
+                  <td className="p-3">{patient.contact || 'N/A'}</td>
+                  <td className="p-3">{patient.email || 'N/A'}</td>
+                  <td className="p-3">{patient.doctor || 'N/A'}</td>
                   <td className="flex justify-center p-3 space-x-2 text-xl">
-                    <button className="cursor-pointer text-primary hover:text-secondary">✏️</button>
-                    <button className="text-red-600 cursor-pointer hover:text-red-800">🗑</button>
+                    <button className="cursor-pointer text-primary hover:text-secondary" onClick={() => handleEdit(patient.id)}>✏️</button>
+                    <button className="text-red-600 cursor-pointer hover:text-red-800" onClick={() => handleDelete(patient.id)}>🗑</button>
                   </td>
                 </tr>
               ))}
@@ -86,7 +105,7 @@ function PatientList() {
         </div>
       </div>
       <div className="flex items-center justify-between mt-4">
-        <span>Showing {indexOfFirstItem + 1} to {indexOfLastItem} of {patients.length} entries</span>
+        <span>Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, patients.length)} of {patients.length} entries</span>
         <div className="flex space-x-2">
           <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Previous</button>
           {[...Array(totalPages)].map((_, i) => (

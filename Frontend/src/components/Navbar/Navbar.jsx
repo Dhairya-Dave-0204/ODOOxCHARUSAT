@@ -99,6 +99,20 @@ function Navbar() {
           >
             <li>Profile</li>
           </Link>
+          {user.role === 'PATIENT' && (
+            <Link
+              to="/my-reports"
+              className="transition-all duration-500 hover:scale-110 hover:text-primary"
+            >
+              <li>My Reports</li>
+            </Link>
+          )}
+          <li
+            className="transition-all duration-500 hover:scale-110 hover:text-primary cursor-pointer"
+            onClick={() => window.open('http://localhost:8501', '_blank')}
+          >
+            Analyze
+          </li>
           {!user.email ? (
             <Link
               to="/signup"
@@ -164,6 +178,20 @@ function Navbar() {
           >
             <li>Profile</li>
           </Link>
+          {user.role === 'PATIENT' && (
+            <Link
+              to="/my-reports"
+              className="transition-all duration-700 decoration-primary hover:text-primary hover:underline underline-offset-4"
+            >
+              <li>My Reports</li>
+            </Link>
+          )}
+          <li
+            className="transition-all duration-700 decoration-primary hover:text-primary hover:underline underline-offset-4 cursor-pointer"
+            onClick={() => window.open('http://localhost:8501', '_blank')}
+          >
+            Analyze
+          </li>
           {!user.email ? (
             <Link
               to="/signup"
