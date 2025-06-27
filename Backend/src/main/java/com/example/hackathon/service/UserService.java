@@ -19,9 +19,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private EmailService emailService;
-
     // public Optional<User> authenticate(String email, String password) {
     // Optional<User> user = userRepository.findByEmail(email);
     // if (user.isPresent() && passwordEncoder.matches(password,
@@ -78,31 +75,6 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public String sendResetEmail(String email) {
-        System.out.println("Entered sendResetEmail");
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            return "Email not found!";
-        }
-        System.out.println("Email found!");
-        User user = userOptional.get();
-        String token = UUID.randomUUID().toString(); // Generate random token
-        user.setResetToken(token);
-        // user.setTokenExpiry(LocalDateTime.now().plusMinutes(1)); // Token expires in
-        // 15 mins
-        user.setTokenExpiry(LocalDateTime.now().plusMinutes(15)); // Token expires in 15 mins
-        userRepository.save(user);
-
-        // ✅ Send Email
-        String resetLink = "http://localhost:5173/reset?token=" + token;
-        String emailContent = "<p>Click the link below to reset your password:</p>"
-                + "<a href='" + resetLink + "' style='color:blue; text-decoration:none;'>Reset Password</a>";
-
-        emailService.sendEmail(user.getEmail(), "Reset Password", emailContent,true);
-
-        return "Reset link sent!";
-    }
-
     public String resetPassword(String token, String newPassword) {
         Optional<User> userOptional = userRepository.findByResetToken(token);
         if (userOptional.isEmpty()) {
@@ -123,6 +95,16 @@ public class UserService {
         userRepository.save(user);
 
         return "Password successfully reset!";
+    }
+
+    public User addAdminUser(String email, String password) {
+        String name = "Admin";
+        User admin = new User();
+        admin.setEmail(email);
+        admin.setPassword(passwordEncoder.encode(password));
+        admin.setRole(Role.ADMIN);
+        admin.setName(name);
+        return userRepository.save(admin);
     }
 
 }

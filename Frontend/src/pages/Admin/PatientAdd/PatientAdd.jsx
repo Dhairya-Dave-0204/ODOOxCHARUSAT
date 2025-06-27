@@ -13,9 +13,6 @@ function PatientAdd() {
   const [dateType1, setDateType1] = useState("text");
   const [timeType, setTimeType] = useState("text");
   const [doctors, setDoctors] = useState([]);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [email, setEmail] = useState("");
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false); // loading state to control the loading effect
   const [confirming, setConfirming] = useState(false); // confirming appointment state
@@ -40,7 +37,6 @@ function PatientAdd() {
     e.preventDefault();
     const form = e.target;
     const patientEmail = form.mail.value;
-    setEmail(patientEmail);
 
     setFormData({
       name: form.name.value,
@@ -63,62 +59,32 @@ function PatientAdd() {
     });
 
     try {
-      await axios.post("http://localhost:8080/auth/sendOtp", {
-        email: patientEmail,
-      });
-      setOtpSent(true);
-      toast.success("OTP sent successfully");
+      const patientResponse = await axios.post(
+        "http://localhost:8080/auth/addPatient",
+        formData,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const patientId = patientResponse.data.patientId;
+      const appointmentData = { ...formData.appointment, patientId };
+
+      await axios.post(
+        "http://localhost:8080/auth/addAppointment",
+        appointmentData,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      setConfirming(false); // Stop confirming effect after the appointment is added
+      navigate("/admin/patient-list");
     } catch (error) {
       console.error(
-        "Error sending OTP:",
+        "Error adding patient or appointment:",
         error.response ? error.response.data : error
       );
-    }
-  };
-
-  const verifyOtp = async () => {
-    setLoading(true); // Start loading when verifying OTP
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/auth/verifyOtp",
-        { email, otp }
-      );
-      console.log(response.data.verified);
-
-      if (response.data.verified) {
-        setConfirming(true); // Start confirming effect after OTP verification
-
-        const patientResponse = await axios.post(
-          "http://localhost:8080/auth/addPatient",
-          formData,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-
-        const patientId = patientResponse.data.patientId;
-        const appointmentData = { ...formData.appointment, patientId };
-
-        await axios.post(
-          "http://localhost:8080/auth/addAppointment",
-          appointmentData,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-
-        setConfirming(false); // Stop confirming effect after the appointment is added
-        navigate("/admin/patient-list");
-      } else {
-        alert("Invalid OTP. Please try again.");
-      }
-    } catch (error) {
-      console.error(
-        "OTP verification failed:",
-        error.response ? error.response.data : error
-      );
-    } finally {
-      setLoading(false); // Stop loading after verification attempt is done
     }
   };
 
@@ -272,30 +238,6 @@ function PatientAdd() {
           border-color: #3b82f6;
         }
       `}</style>
-
-      {otpSent && (
-        <div className="mt-6">
-          <h3 className="text-xl">Verify OTP</h3>
-          <input
-            type="text"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            placeholder="Enter OTP"
-            className="input-field mt-2"
-          />
-          <button
-            onClick={verifyOtp}
-            className="w-full py-2 mt-2 text-lg font-medium text-white bg-primary rounded-lg"
-          >
-            {loading ? "Verifying..." : "Verify OTP"}
-          </button>
-          {loading && (
-            <div className="mt-2 text-center text-gray-500">
-              <span>Loading...</span>
-            </div>
-          )}
-        </div>
-      )}
 
       {confirming && (
         <div className="mt-6">

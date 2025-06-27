@@ -18,8 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.example.hackathon.service.EmailService;
-import com.example.hackathon.service.OtpService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -54,12 +52,6 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;    
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private OtpService otpService;
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
@@ -150,26 +142,9 @@ public class AuthController {
 
         patientRepository.save(patient);
 
-        // ✅ Send email after successful registration
-        String subject = "Welcome to CareConnect!";
-        String message = "Hello " + user.getName() + ",\n\n" +
-                "Your account has been created successfully.\n" +
-                "Login using your email: " + user.getEmail() + "\n" +
-                "Your temporary password is: " + formattedDob + "\n\n" +
-                "Best Regards,\nCareConnect Team";
-
-        emailService.sendEmail(user.getEmail(), subject, message, true);
-
-        Optional<Patient> patientid = patientRepository.findByUser_Email(email);
-        if (patientid.isEmpty()) {
-            return ResponseEntity.badRequest().body("Patient not found!");
-        } else {
-            System.out.println("Patient ID: " + patientid.get().getPatientId());
-        }
-
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Patient added successfully!");
-        response.put("patientId", patientid.get().getPatientId()); // Include patient ID
+        response.put("patientId", patient.getPatientId()); // Include patient ID
 
         return ResponseEntity.ok(response);
     }
@@ -227,16 +202,6 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> request) {
-        return ResponseEntity.ok(userService.sendResetEmail(request.get("email")));
-    }
-
-    @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) {
-        return ResponseEntity.ok(userService.resetPassword(request.get("token"), request.get("newPassword")));
-    }
-
     @PostMapping("/addAppointment")
 @PreAuthorize("hasAnyRole('ADMIN', 'PATIENT')")
 public ResponseEntity<?> addAppointment(@RequestBody Map<String, Object> request) {
@@ -274,7 +239,7 @@ public ResponseEntity<?> addAppointment(@RequestBody Map<String, Object> request
                 patientName, date, time, doctorId, cause
             );
 
-            emailService.sendEmail(patientEmail, subject, message, false);
+            // This endpoint is now silent, so no email is sent
         }
 
         return ResponseEntity.ok(String.format("Appointment added successfully: %s", savedAppointment));
@@ -282,39 +247,6 @@ public ResponseEntity<?> addAppointment(@RequestBody Map<String, Object> request
         return ResponseEntity.badRequest().body("Failed to add appointment: " + e.getMessage());
     }
 }
-
-
-    @PostMapping("/sendOtp")
-    public ResponseEntity<?> sendOtp(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-
-        if (email == null || email.isEmpty()) {
-            return ResponseEntity.badRequest().body("Email is required!");
-        }
-
-        String otp = otpService.generateOtp(email);
-        return ResponseEntity.ok("OTP sent successfully!");
-    }
-
-    @PostMapping("/verifyOtp")
-    public ResponseEntity<?> verifyOtp(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String otp = request.get("otp");
-        System.out.println("Email: " + email + ", OTP: " + otp);
-
-        if (email == null || otp == null) {
-            return ResponseEntity.badRequest().body("Email and OTP are required!");
-        }
-
-        boolean isValid = otpService.verifyOtp(email, otp);
-        System.out.println(isValid);
-
-        if (isValid) {
-            return ResponseEntity.ok(Map.of("verified", true, "message", "OTP verified successfully!"));
-        } else {
-            return ResponseEntity.badRequest().body(Map.of("verified", false, "message", "Invalid OTP!"));
-        }
-    }
 
     @GetMapping("/getPatientId")
     public ResponseEntity<Map<String, Object>> getPatientId(@RequestParam String email) {
